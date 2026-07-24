@@ -1,551 +1,740 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex,nofollow">
-<title>Anchorage-first (internal working master): a company born as it builds Anchorage</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>The Reading Room &middot; Anchorage-first &middot; founder-eyes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#0E1A26; --panel:#15293C; --panel2:#1B3145; --line:#2B4257;
-    --fog:#D8DEE3; --dim:#8CA3B5; --horizon:#8FB3C7;
-    --brass:#C9A45C; --brass-bright:#E3C685; --copper:#A97E52; --clay:#C05B40;
-    --ok:#7FA98A;
-    --serif:'Instrument Serif',Georgia,serif;
-    --sans:'Instrument Sans',-apple-system,sans-serif;
-    --mono:'IBM Plex Mono',ui-monospace,monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{background:var(--ink);color:var(--fog);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  ::selection{background:var(--brass);color:var(--ink)}
+:root{
+  --ink:#0A1726; --ink-2:#0E2034; --ink-3:#13283F;
+  --paper:#F2ECDF; --text:#E9E3D6; --muted:#94A3B5; --muted-2:#6B7C90;
+  --brass:#D8A94A; --brass-2:#EAC36B; --signal:#74B8C7; --action:#E6A277;
+  --line:rgba(216,169,74,.20); --line-2:rgba(233,227,214,.10);
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Hanken Grotesk",system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans); color:var(--text);
+  background:
+    radial-gradient(120% 80% at 82% -8%,rgba(216,169,74,.09),transparent 60%),
+    radial-gradient(90% 70% at -6% 10%,rgba(116,184,199,.06),transparent 58%),
+    linear-gradient(180deg,#0B1927 0%,#0A1726 40%,#091320 100%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  line-height:1.5; overflow-x:hidden;
+}
+a{color:inherit}
+.wrap{width:min(940px,92vw); margin:0 auto; padding:0 0 90px}
 
-  /* ---------- draft banner ---------- */
-  .draftbar{position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(14,26,38,.92);border-top:1px solid var(--line);
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
-    padding:7px 16px;display:flex;justify-content:space-between;gap:12px;backdrop-filter:blur(6px)}
-  .draftbar b{color:var(--clay);font-weight:600}
+/* top bar */
+.topbar{position:sticky; top:0; z-index:40; backdrop-filter:blur(12px);
+  background:linear-gradient(180deg,rgba(9,19,32,.92),rgba(9,19,32,.66));
+  border-bottom:1px solid var(--line-2)}
+.topbar .inner{width:min(940px,92vw); margin:0 auto; display:flex; align-items:center; gap:14px;
+  justify-content:space-between; padding:11px 0}
+.brandmark{font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted)}
+.brandmark b{color:var(--brass); font-weight:600}
+.conf{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted-2)}
+.chapnav{overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none}
+.chapnav::-webkit-scrollbar{display:none}
+.chapnav ul{list-style:none; display:flex; gap:4px; padding:8px 0 9px; width:min(940px,92vw); margin:0 auto}
+.chapnav a{font-family:var(--mono); font-size:10.5px; letter-spacing:.04em; color:var(--muted-2);
+  text-decoration:none; white-space:nowrap; padding:5px 10px; border-radius:20px; border:1px solid transparent; transition:.15s}
+.chapnav a:hover{color:var(--text)}
+.chapnav a.on{color:var(--ink); background:var(--brass); border-color:var(--brass); font-weight:600}
 
-  /* ---------- rail ---------- */
-  nav.rail{position:fixed;left:0;top:0;bottom:34px;width:224px;padding:26px 0 26px 22px;z-index:50;
-    display:flex;flex-direction:column;gap:2px;overflow-y:auto;scrollbar-width:none;
-    border-right:1px solid rgba(43,66,87,.55);background:linear-gradient(180deg,rgba(14,26,38,.6),rgba(14,26,38,.2))}
-  nav.rail::-webkit-scrollbar{display:none}
-  .rail .brand{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--brass);text-transform:uppercase;margin-bottom:18px}
-  .rail a{display:flex;gap:9px;align-items:baseline;padding:4px 10px 4px 0;color:var(--dim);text-decoration:none;
-    font-size:11.5px;letter-spacing:.02em;border-left:2px solid transparent;padding-left:10px;margin-left:-12px;
-    transition:color .2s,border-color .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .rail a .n{font-family:var(--mono);font-size:9.5px;color:var(--line);transition:color .2s;flex:0 0 auto}
-  .rail a.on{color:var(--fog);border-left-color:var(--brass)}
-  .rail a.on .n{color:var(--brass)}
-  .rail a:hover{color:var(--horizon)}
+/* hero */
+.hero{padding:58px 0 8px}
+.eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--brass); margin-bottom:20px}
+h1{font-family:var(--serif); font-weight:600; letter-spacing:-.03em; line-height:1.02;
+  font-size:clamp(34px,6.4vw,60px); color:var(--paper)}
+h1 .thin{display:block; font-family:var(--serif); font-weight:400; font-style:italic; color:var(--brass-2);
+  letter-spacing:-.01em; font-size:.46em; margin-top:16px; line-height:1.3}
+.dek{margin-top:22px; max-width:66ch; color:var(--text); opacity:.9; font-size:16px; line-height:1.66}
+.rule{height:2px; width:70px; background:var(--brass); margin:26px 0 0; border-radius:2px}
 
-  /* ---------- slides ---------- */
-  main{margin-left:224px}
-  section.slide{min-height:100vh;padding:76px 68px 96px;position:relative;display:flex;flex-direction:column;justify-content:center;
-    border-bottom:1px solid rgba(43,66,87,.45)}
-  .snum{position:absolute;top:30px;right:64px;font-family:var(--mono);font-size:11px;color:var(--line);letter-spacing:.18em}
-  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);margin-bottom:18px}
-  .eyebrow.risk{color:var(--clay)}
-  h1{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.4vw,74px);line-height:1.04;color:#F2F0EA;letter-spacing:-.01em}
-  h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.6vw,48px);line-height:1.08;color:#F2F0EA;margin-bottom:26px;max-width:24ch}
-  h3{font-family:var(--sans);font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--horizon);margin-bottom:10px}
-  p.lead{font-size:clamp(17px,1.5vw,20px);color:var(--fog);max-width:64ch}
-  p.body{font-size:15.5px;color:#B9C6CF;max-width:68ch;margin-top:12px}
-  .thesis{font-family:var(--serif);font-style:italic;font-size:clamp(19px,1.9vw,25px);color:var(--brass-bright);
-    border-left:2px solid var(--brass);padding-left:20px;margin-top:34px;max-width:58ch;line-height:1.35}
+/* start here */
+.starthere{margin:34px 0 0; border:1px solid var(--line); border-radius:18px; overflow:hidden;
+  background:linear-gradient(180deg,rgba(216,169,74,.06),rgba(14,32,52,.30))}
+.sh-head{display:flex; align-items:center; gap:12px; padding:16px 20px; border-bottom:1px solid var(--line-2)}
+.sh-badge{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink);
+  background:var(--brass); padding:5px 11px; border-radius:20px; font-weight:600}
+.sh-head b{font-family:var(--serif); font-weight:600; font-size:18px; color:var(--paper)}
+.sh-head .mins{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--muted); letter-spacing:.06em}
+.sh-steps{list-style:none; counter-reset:s}
+.sh-steps li{counter-increment:s; display:grid; grid-template-columns:34px 1fr auto; gap:12px; align-items:baseline;
+  padding:14px 20px; border-bottom:1px solid var(--line-2)}
+.sh-steps li:last-child{border-bottom:none}
+.sh-steps li::before{content:counter(s); font-family:var(--mono); font-size:13px; color:var(--brass);
+  border:1px solid var(--line); border-radius:50%; width:26px; height:26px; display:grid; place-items:center}
+.sh-t{font-weight:600; color:var(--text); font-size:15px}
+.sh-d{color:var(--muted); font-size:13px; margin-top:2px}
+.sh-min{font-family:var(--mono); font-size:11px; color:var(--muted-2); white-space:nowrap}
+.sh-steps a{color:var(--brass-2); text-decoration:none; border-bottom:1px solid rgba(216,169,74,.3); word-break:break-all; font-family:var(--mono); font-size:12px}
+.sh-steps a:hover{color:var(--brass)}
 
-  /* ---------- lineage chips (the signature) ---------- */
-  .tag{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.12em;
-    padding:2px 7px 1.5px;border-radius:2px;vertical-align:2px;margin-left:6px;white-space:nowrap}
-  .tag.m{background:var(--brass);color:var(--ink)}
-  .tag.s{background:transparent;color:var(--horizon);border:1px solid var(--horizon)}
-  .tag.v{background:transparent;color:var(--copper);border:1px solid var(--copper)}
-  .tag.u{background:transparent;color:var(--dim);border:1px dashed var(--dim)}
-  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:26px;font-family:var(--mono);font-size:10.5px;color:var(--dim);align-items:center}
-  .legend span.k{letter-spacing:.16em}
+/* stats band */
+.stats{display:flex; flex-wrap:wrap; gap:9px; margin:26px 0 0}
+.stat{border:1px solid var(--line-2); border-radius:12px; padding:11px 14px; background:rgba(14,32,52,.35); flex:1 1 128px; min-width:118px}
+.stat .n{font-family:var(--serif); font-size:22px; font-weight:600; color:var(--brass-2); letter-spacing:-.01em}
+.stat .l{font-family:var(--mono); font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted-2); margin-top:3px}
+.stats-note{font-family:var(--mono); font-size:10.5px; color:var(--muted-2); margin-top:10px; letter-spacing:.03em}
 
-  /* ---------- stat rows / cards ---------- */
-  .grid{display:grid;gap:14px;margin-top:30px}
-  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px 22px}
-  .card .big{font-family:var(--serif);font-size:clamp(30px,3vw,44px);color:#F2F0EA;line-height:1}
-  .card .big .unit{font-size:.5em;color:var(--dim)}
-  .card .lbl{font-size:12.5px;color:var(--dim);margin-top:8px;line-height:1.45}
-  .card.brass{border-color:rgba(201,164,92,.5)}
-  .card.brass .big{color:var(--brass-bright)}
+/* legend */
+.legend{margin:22px 0 0; border:1px solid var(--line-2); border-radius:12px; padding:13px 16px; background:rgba(9,19,32,.35)}
+.legend .lg-title{font-family:var(--mono); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted-2); margin-bottom:9px}
+.legend ul{list-style:none; display:flex; flex-wrap:wrap; gap:8px 18px}
+.legend li{display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted)}
 
-  /* ---------- ledger block ---------- */
-  .ledger{font-family:var(--mono);font-size:13px;background:var(--panel);border:1px solid var(--line);border-radius:6px;
-    margin-top:26px;max-width:820px;overflow:hidden}
-  .ledger .lhead{padding:10px 18px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass);
-    border-bottom:1px solid var(--line);background:var(--panel2)}
-  .ledger .row{display:flex;justify-content:space-between;gap:20px;padding:9px 18px;border-bottom:1px dashed rgba(43,66,87,.7);color:#C4D0D8}
-  .ledger .row .r{text-align:right;color:#F2F0EA;flex:0 0 auto}
-  .ledger .row.sum{border-bottom:none;border-top:1.5px solid var(--brass);background:rgba(201,164,92,.07);color:var(--brass-bright);font-weight:600;flex-direction:column;gap:4px}
-  .ledger .row.sum .r{text-align:left;color:var(--brass-bright)}
-  .ledger .row span:first-child{flex:1 1 58%}
-  .ledger .row .r{flex:0 1 auto;max-width:42%}
-  .ledger .row.sum span:first-child,.ledger .row.sum .r{max-width:none;flex:none}
-  .ledger .row .d{color:var(--dim)}
+/* chapters */
+.chapter{margin:56px 0 0; scroll-margin-top:96px}
+.ch-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; border-bottom:1px solid var(--line); padding-bottom:15px}
+.ch-num{font-family:var(--mono); color:var(--brass); font-size:13px; letter-spacing:.18em}
+.ch-title{font-family:var(--serif); font-size:clamp(25px,4vw,36px); font-weight:600; letter-spacing:-.02em; color:var(--paper)}
+.ch-lead{color:var(--text); opacity:.86; font-size:15.5px; line-height:1.66; margin:17px 0 4px; max-width:76ch}
 
-  /* ---------- pillar / persona tables ---------- */
-  table.tbl{width:100%;border-collapse:collapse;margin-top:26px;font-size:14px}
-  .tbl th{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
-    text-align:left;padding:8px 14px;border-bottom:1px solid var(--line)}
-  .tbl td{padding:10px 14px;border-bottom:1px solid rgba(43,66,87,.5);vertical-align:top;color:#B9C6CF}
-  .tbl td:first-child{color:#F2F0EA;font-weight:500;white-space:nowrap}
-  .tbl td .role{font-family:var(--mono);font-size:10px;color:var(--brass);letter-spacing:.1em;text-transform:uppercase;display:block;margin-top:2px}
+/* entries */
+.entry{border:1px solid var(--line-2); border-radius:14px; padding:15px 17px; margin:11px 0;
+  background:linear-gradient(180deg,rgba(19,40,63,.34),rgba(11,25,40,.24)); transition:border-color .16s, transform .16s}
+.entry:hover{border-color:var(--line)}
+.e-top{display:flex; justify-content:space-between; gap:14px; align-items:flex-start; flex-wrap:wrap}
+.e-title{font-family:var(--serif); font-size:18px; font-weight:600; color:var(--paper); letter-spacing:-.01em}
+.e-what{color:var(--muted); font-size:13.5px; line-height:1.55; margin-top:5px; max-width:72ch}
+.e-meta{display:flex; gap:7px; align-items:center; flex-shrink:0; flex-wrap:wrap; justify-content:flex-end}
+.chip{font-family:var(--mono); font-size:9.5px; letter-spacing:.09em; text-transform:uppercase; padding:4px 9px;
+  border-radius:20px; border:1px solid; white-space:nowrap; font-weight:500}
+.s-live{color:#9BD6E1; border-color:rgba(116,184,199,.45); background:rgba(116,184,199,.10)}
+.s-draft{color:var(--muted); border-color:var(--line-2); background:rgba(148,163,181,.05)}
+.s-gated{color:var(--brass-2); border-color:rgba(216,169,74,.45); background:rgba(216,169,74,.10)}
+.s-await{color:var(--action); border-color:rgba(230,162,119,.5); background:rgba(230,162,119,.10)}
+.rt{font-family:var(--mono); font-size:10.5px; color:var(--muted-2); letter-spacing:.05em; white-space:nowrap}
+.e-link{margin-top:12px; padding-top:11px; border-top:1px dashed var(--line-2); display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+.e-link .tag{font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted-2); flex-shrink:0}
+.lnk{font-family:var(--mono); font-size:12px; color:var(--brass-2); text-decoration:none; word-break:break-all;
+  border-bottom:1px solid rgba(216,169,74,.3)}
+.lnk:hover{color:var(--brass); border-color:var(--brass)}
+.path{font-family:var(--mono); font-size:11.5px; color:var(--muted-2); word-break:break-word}
+.path b{color:var(--muted); font-weight:600}
 
-  /* ---------- gates ---------- */
-  .law{display:flex;gap:16px;margin-top:18px;max-width:800px}
-  .law .gate{flex:0 0 auto;width:22px;position:relative;margin-top:4px}
-  .law .gate::before,.law .gate::after{content:"";position:absolute;top:0;bottom:0;width:3px;background:var(--clay);border-radius:2px}
-  .law .gate::before{left:4px}.law .gate::after{right:4px}
-  .law .t{font-size:15px;color:#D5DDE3}
-  .law .t b{color:#F2F0EA;font-weight:600}
+/* verbatim primary source */
+details.source{margin:14px 0 4px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:rgba(9,19,32,.4)}
+details.source>summary{cursor:pointer; list-style:none; padding:15px 18px; display:flex; align-items:center; gap:12px;
+  font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--brass-2)}
+details.source>summary::-webkit-details-marker{display:none}
+details.source>summary .tw{margin-left:auto; color:var(--muted-2); transition:.2s}
+details.source[open]>summary .tw{transform:rotate(90deg)}
+.source-body{padding:4px 20px 20px; border-top:1px solid var(--line-2)}
+.source-body .vb-meta{font-family:var(--mono); font-size:10.5px; color:var(--muted-2); letter-spacing:.04em; margin:14px 0 12px}
+blockquote.verbatim{border-left:2px solid var(--brass); padding:2px 0 2px 18px; margin:0}
+blockquote.verbatim p{font-family:var(--serif); font-size:15px; line-height:1.72; color:var(--text); opacity:.94; margin:0 0 15px}
+blockquote.verbatim p:last-child{margin-bottom:0}
 
-  /* ---------- steps / dominos ---------- */
-  .step{display:flex;gap:18px;margin-top:20px;max-width:780px;align-items:baseline}
-  .step .num{font-family:var(--serif);font-size:34px;color:var(--brass);flex:0 0 44px;line-height:1}
-  .step .t b{display:block;color:#F2F0EA;font-size:16.5px;font-weight:600;margin-bottom:3px}
-  .step .t{font-size:14.5px;color:#AEBDC8}
+/* callout / gates */
+.callout{margin:14px 0 0; border:1px solid rgba(230,162,119,.35); border-radius:14px; padding:15px 18px; background:rgba(230,162,119,.06)}
+.callout .co-h{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--action); margin-bottom:10px}
+.gates{list-style:none; display:grid; gap:8px}
+.gates li{display:flex; gap:10px; font-size:14px; color:var(--text); line-height:1.5}
+.gates li b{color:var(--brass-2); font-family:var(--serif); font-weight:600}
+.gates li::before{content:"\25C6"; color:var(--action); font-size:10px; margin-top:5px}
 
-  /* ---------- branch panels ---------- */
-  .branches{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
-  .branch{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:8px}
-  .branch .bl{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--brass)}
-  .branch h4{font-family:var(--serif);font-weight:400;font-size:21px;color:#F2F0EA}
-  .branch p{font-size:13px;color:#AEBDC8}
-  .branch.b .bl{color:var(--brass-bright)}
-  .branch.b{border-color:rgba(201,164,92,.55);background:linear-gradient(180deg,rgba(201,164,92,.08),var(--panel))}
+.movelist{list-style:none; display:grid; gap:9px; margin-top:6px}
+.movelist li{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:baseline;
+  border:1px solid var(--line-2); border-radius:12px; padding:12px 15px; background:rgba(19,40,63,.28)}
+.movelist .code{font-family:var(--mono); font-size:12px; color:var(--brass); font-weight:600}
+.movelist .txt{font-size:14px; color:var(--text); line-height:1.5}
+.movelist .txt b{color:var(--paper); font-weight:600}
 
-  /* ---------- two-column ---------- */
-  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:26px}
-  .col h3.ground{color:var(--brass)} .col h3.threat{color:var(--clay)}
-  .reconcile{margin-top:26px;border:1px solid var(--line);border-left:3px solid var(--brass);background:var(--panel);
-    border-radius:0 6px 6px 0;padding:18px 22px;font-size:15px;color:#D5DDE3;max-width:940px}
+/* foot */
+.foot{margin-top:70px; border-top:1px solid var(--line); padding-top:20px; display:flex; justify-content:space-between;
+  flex-wrap:wrap; gap:10px; font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted-2)}
+.foot b{color:var(--brass)}
 
-  /* ---------- conditional / banners ---------- */
-  .cond{border:1px dashed var(--copper);border-radius:6px;padding:14px 18px;margin-top:22px;
-    font-family:var(--mono);font-size:12px;color:var(--copper);max-width:820px;line-height:1.6}
-  .verdict{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink);
-    background:var(--ok);padding:3px 10px;border-radius:2px;margin-bottom:16px}
-
-  ul.tight{list-style:none;margin-top:16px;max-width:72ch}
-  ul.tight li{padding:9px 0 9px 22px;position:relative;font-size:15px;color:#C4D0D8;border-bottom:1px solid rgba(43,66,87,.4)}
-  ul.tight li::before{content:"";position:absolute;left:0;top:17px;width:8px;height:2px;background:var(--brass)}
-  ul.tight li b{color:#F2F0EA;font-weight:600}
-
-  .quote{font-family:var(--serif);font-style:italic;font-size:clamp(18px,1.8vw,23px);color:#EDE9DF;line-height:1.4;max-width:58ch}
-  .quote .attr{display:block;font-family:var(--mono);font-style:normal;font-size:10.5px;letter-spacing:.16em;color:var(--dim);margin-top:10px;text-transform:uppercase}
-
-  html.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
-  html.js .reveal.in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){html.js .reveal{opacity:1;transform:none;transition:none}}
-  @media print{
-    html.js .reveal{opacity:1 !important;transform:none !important;transition:none}
-    nav.rail,.draftbar{display:none}
-    body{background:#fff;color:#1a2733}
-    section.slide{min-height:auto;page-break-after:always;border-bottom:none;padding:40px 32px}
-  }
-
-  /* ---------- cover ---------- */
-  #s00{justify-content:center;background:
-    radial-gradient(1100px 500px at 78% 12%,rgba(143,179,199,.10),transparent 60%),
-    radial-gradient(800px 420px at 18% 88%,rgba(201,164,92,.08),transparent 60%),var(--ink)}
-  #s00 .covermeta{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin-top:44px;display:flex;gap:26px;flex-wrap:wrap}
-
-  @media (max-width:960px){
-    nav.rail{display:none} main{margin-left:0}
-    section.slide{padding:64px 26px 96px}
-    .g2,.g3,.branches,.twocol{grid-template-columns:1fr}
-    .snum{right:26px}
-  }
+@media(max-width:640px){
+  .hero{padding:40px 0 4px}
+  .sh-steps li{grid-template-columns:28px 1fr; }
+  .sh-min{grid-column:2; margin-top:2px}
+  .e-top{flex-direction:column; gap:9px}
+  .e-meta{justify-content:flex-start}
+  .movelist li{grid-template-columns:auto 1fr}
+}
 </style>
 </head>
 <body>
 
-<nav class="rail" id="rail">
-  <div class="brand">Anchorage-first · internal master</div>
-  <a href="#s00"><span class="n">00</span>Cover</a>
-  <a href="#s01"><span class="n">01</span>The point, first</a>
-  <a href="#s02"><span class="n">02</span>The wager, honestly</a>
-  <a href="#s02b"><span class="n">02B</span>The evidence base</a>
-  <a href="#s03"><span class="n">03</span>The running system</a>
-  <a href="#s04"><span class="n">04</span>Where the market is</a>
-  <a href="#s05"><span class="n">05</span>The premise</a>
-  <a href="#s06"><span class="n">06</span>The Anchorage sequence</a>
-  <a href="#s07"><span class="n">07</span>The onboarding engine</a>
-  <a href="#s08"><span class="n">08</span>The operating loop</a>
-  <a href="#s09"><span class="n">09</span>Meeting time = creative time</a>
-  <a href="#s10"><span class="n">10</span>The executive layer</a>
-  <a href="#s11"><span class="n">11</span>Reward, not replace</a>
-  <a href="#s12"><span class="n">12</span>The education playbook</a>
-  <a href="#s13"><span class="n">13</span>Product law</a>
-  <a href="#s13b"><span class="n">13B</span>What each seat gets</a>
-  <a href="#s14"><span class="n">14</span>The longer arc</a>
-  <a href="#s15"><span class="n">15</span>Business model</a>
-  <a href="#s16"><span class="n">16</span>The people</a>
-  <a href="#s17"><span class="n">17</span>The ask + sequencing</a>
-  <a href="#s18"><span class="n">18</span>Status + provenance</a>
-</nav>
-
-<main>
-
-<!-- ============ 00 COVER ============ -->
-<section class="slide" id="s00">
-  <div class="snum">S00</div>
-  <div class="eyebrow reveal">Anchorage-first · INTERNAL WORKING MASTER · strip before send · owner review only</div>
-  <h1 class="reveal">A company born<br>as it builds Anchorage.</h1>
-  <p class="lead reveal" style="margin-top:28px">We install an operating system of governed AI agents at Anchorage, learn the organization top to bottom, and build the machine by applying it in the box to one 750-person regulated institution. The build is the product. Anchorage takes a first-mover posture among regulated institutions operationalizing agentic workflows under bank-grade human governance, and keeps the head start.</p>
-  <div class="thesis reveal">Every company is about to run on agents. The one that gets there first, without losing control of what works, sets the pace for its category. We propose that company is Anchorage.</div>
-  <div class="covermeta reveal">
-    <span>2026-07-23 · INTERNAL WORKING MASTER</span><span>Strip before send · external cut is room.html</span><span>Product deliberately unnamed</span><span>Prepared for the Anchorage C-suite</span><span>Jarred Winn, founder</span>
+<div class="topbar">
+  <div class="inner">
+    <span class="brandmark"><b>The Reading Room</b> &middot; founder-eyes</span>
+    <span class="conf">confidential</span>
   </div>
-  <div class="legend reveal">
-    <span class="k">LINEAGE, ON EVERY STAT:</span>
-    <span class="tag m">MEASURED</span><span class="tag s">SURVEY</span><span class="tag v">VENDOR</span><span class="tag u">UNVERIFIED</span>
-    <span>unverified numbers are candidates, never quotable in the room</span>
-  </div>
-</section>
+  <nav class="chapnav" aria-label="Chapters">
+    <ul>
+      <li><a href="#ch1">01 Vision</a></li>
+      <li><a href="#ch2">02 Plan</a></li>
+      <li><a href="#ch3">03 Model</a></li>
+      <li><a href="#ch4">04 Artifacts</a></li>
+      <li><a href="#ch5">05 Build</a></li>
+      <li><a href="#ch6">06 Packets</a></li>
+      <li><a href="#ch7">07 Gauntlet</a></li>
+      <li><a href="#ch8">08 Your Moves</a></li>
+    </ul>
+  </nav>
+</div>
 
-<!-- ============ 01 THE POINT ============ -->
-<section class="slide" id="s01">
-  <div class="snum">S01</div>
-  <div class="eyebrow reveal">The point, in thirty seconds</div>
-  <h2 class="reveal">Anchorage is full of work that steals time from your best people. We move that work to agents, and keep every consequential decision with a human.</h2>
-  <p class="lead reveal">We install a governed operating system of AI agents across Anchorage: it takes triage, follow-up, and admin off your teams, routes what matters to the right person, and is designed so nothing touching money, anything irreversible, or any consequential external action acts without a human gate. A dedicated in-the-box build for Anchorage, plus a rollout that trains every layer of the org while the tools get built. It runs live on the operator's own companies today, and you can click through it.</p>
-  <div class="thesis reveal">The ask is one page: a scoped design partnership where Anchorage takes a first-mover posture among regulated institutions running agentic workflows under bank-grade human governance. Not a software license. A company being born on your ground.</div>
-</section>
+<main class="wrap">
 
-<!-- ============ 02 THE WAGER ============ -->
-<section class="slide" id="s02">
-  <div class="snum">S02</div>
-  <div class="eyebrow reveal">The wager, stated honestly</div>
-  <h2 class="reveal">The wager is a joint value-creation hypothesis: the conditions under which Anchorage reaches roughly <em>2.5x its value.</em> A model we build together, never a forecast and never a promise.</h2>
-  <div class="cond reveal">HONESTY BOUNDARY. ~$4B to ~$10B is the founder's stated ambition, a <b>2.5x</b> move; the premise valuation is <span class="tag u">UNVERIFIED</span>, your internal number is the base, and ~$4B is only the public shorthand this deck never asserts for you. What follows is the model's structure; presentation rules from the value-model counsel panel are applied and the securities counsel pass is pending: we solve <em>backward</em> from $10B for what must be operationally true, then price each part on its own comp class. The structure is the deliverable; every magnitude is a labeled assumption signed at the intake baseline before it travels as a number. Market-cycle valuation swings sit outside the model; every lever in it is operational.</div>
-  <div class="ledger reveal">
-    <div class="lhead">The reverse-$10B requirements model · solve backward, price each part on its own comp class</div>
-    <div class="row"><span><b>S1 · Custody / bank core</b> <span class="d">AUC, custody, staking and settlement fees, spread on regulated rails</span></span><span class="r">P/E · P/TBV <span class="tag v">VENDOR</span></span></div>
-    <div class="row"><span><b>S2 · Software</b> <span class="d">the retained org-OS product: license and subscription revenue</span></span><span class="r">EV/ARR 4x-10x base <span class="tag v">VENDOR</span></span></div>
-    <div class="row"><span><b>S3 · Services</b> <span class="d">agentic-transformation delivery; zero-weighted until a paid LOI clears</span></span><span class="r">EV/Rev · EV/EBITDA <span class="tag v">VENDOR</span></span></div>
-    <div class="row sum"><span>$10B at the horizon is the sum of the parts, each earning its own multiple, so no single engine has to be heroic.</span><span class="r">3-5 yr horizon · allocation [ASSUMPTION], signed at intake</span></div>
-  </div>
-  <p class="body reveal"><b>The levers are causes, not value lines.</b> A frees capacity across the bank; B and C convert it into custody growth (S1) and net-new product (S1 + S2); D is external services (S3), zero-weighted until paid demand is proven; E is evidence-earned placement within each comp band, applied once. A dollar lives in one segment and is counted once, so no gain is double-counted.</p>
-  <table class="tbl reveal">
-    <thead><tr><th>Capture on the named workflow, net</th><th>What must be true</th><th>Valuation read</th></tr></thead>
-    <tbody>
-      <tr><td>Conservative</td><td>Slower required-AUC path; S2 and S3 carry more of the target, or the horizon stretches toward year 5</td><td>Structure holds; timeline stretches</td></tr>
-      <tr><td>Base</td><td>The S1 custody chain is met on the modeled horizon</td><td>The 2.5x path as modeled</td></tr>
-      <tr><td>Aggressive</td><td>Requirements met early; surplus capacity accelerates product and pulls the S2 line forward</td><td>2.5x with margin; upside</td></tr>
-    </tbody>
-  </table>
-  <div class="cond reveal">All three rows travel together, every time, and each capture band is a labeled assumption <span class="tag u">[ASSUMPTION]</span> signed at intake. One row is the commitment the pilot tests; three rows are the model, and the distribution is exactly what lets the target stay aggressive without pretending it is certain.</div>
-  <div class="thesis reveal">We would rather show you a model you can attack than a headline you have to trust. The number that survives your own scrutiny is the only one worth saying out loud.</div>
-</section>
+  <header class="hero">
+    <div class="eyebrow">The venture journey, end to end &middot; 2026-07-23 to 2026-07-24</div>
+    <h1>Read it in the order it happened.
+      <span class="thin">One braindump to a converged execution loop: the vision, the model, the artifacts, and the moves that are now yours.</span>
+    </h1>
+    <p class="dek">This is the single master document for the venture. It leads you from the founder braindump, through the plan and the counsel-hardened $4B to $10B model, out to every finished artifact, the parts already running, the decision-ready packets, and the verification gauntlet each one survived. Every chapter opens with what happened and why it matters, then lists its pieces with a status, a reading time, and a link.</p>
+    <div class="rule"></div>
+  </header>
 
-<!-- ============ 02B EVIDENCE BASE ============ -->
-<section class="slide" id="s02b">
-  <div class="snum">S02B</div>
-  <div class="eyebrow reveal">What backs the model</div>
-  <h2 class="reveal">Every magnitude is <em>earned</em> before it travels. Here is the evidence base, honestly scoped.</h2>
-  <p class="body reveal">Nothing below supports a bank-wide capacity multiplier by itself, and we never let it. Each source may support only the claim class it actually measures; the bank-wide numbers come from Anchorage's intake baseline and the pilot, or they do not appear.</p>
-  <ul class="tight reveal">
-    <li><b>JPMorgan, $2B for $2B.</b> Jamie Dimon, on the record: "for $2 billion of expense, we have about $2 billion of benefit," measured at the use-case level across 600+ use cases <span class="tag v">VENDOR</span> Bloomberg TV, Oct 2025; verbatim via Business Insider. Supports "a large regulated bank attributes real, measured dollars to AI," never a bank-wide multiplier.</li>
-    <li><b>Wells Fargo, engineering throughput.</b> Engineers report up to 35% more code written <span class="tag v">VENDOR</span> American Banker. An output-volume metric at a regulated bank, scoped to that and nothing larger.</li>
-    <li><b>DORA 2025, delivery throughput.</b> AI adoption now correlates positively with software-delivery throughput, with known stability tradeoffs <span class="tag s">SURVEY</span> Google Cloud. Software delivery only.</li>
-    <li><b>Moderna, adoption velocity.</b> 750 custom GPTs in the first two months of rollout, 40% of active users building their own <span class="tag v">VENDOR</span> OpenAI. Proof that enterprises adopt fast with the right program; it says nothing about capacity or P&L.</li>
-    <li><b>The model's own distribution.</b> The pilot-gated three-row sensitivity on S02 is the fifth leg: the structure, not any borrowed headline, is what makes an aggressive target credible.</li>
-  </ul>
-  <div class="cond reveal">THE LADDER. A 90-day pilot KPI contract is designed to measure the capacity result before any rollout, product, or consultancy claim travels. Signed KPI dictionary and baseline at intake; time-and-motion against a control cohort so every gain has a counterfactual; every figure net of review, rework, and risk; CFO/COO attestation at each milestone, so our claim and Anchorage's own number reconcile to one signed figure. Lever D, the consultancy arm, stays zero-weighted until paid design partners or signed LOIs exist.</div>
-  <div class="thesis reveal">Every large number here is Anchorage's to sign at intake, or it stays off the page. Auditable gains are the only kind that move a valuation, and the human gate is what makes them auditable.</div>
-</section>
+  <!-- START HERE -->
+  <section class="starthere" aria-label="Start here">
+    <div class="sh-head">
+      <span class="sh-badge">Start here</span>
+      <b>The 20-minute path</b>
+      <span class="mins">about 20 min total</span>
+    </div>
+    <ol class="sh-steps">
+      <li>
+        <div>
+          <div class="sh-t">Read the room cut</div>
+          <div class="sh-d">The 12-slide meeting instrument for the Anchorage C-suite. The whole thesis, as it would be walked in the room.</div>
+          <a href="https://winnsolutionsadmin.github.io/deck-3df9b3c4/" target="_blank" rel="noopener">https://winnsolutionsadmin.github.io/deck-3df9b3c4/</a>
+        </div>
+        <span class="sh-min">8 min</span>
+      </li>
+      <li>
+        <div>
+          <div class="sh-t">Read Chapter 8 of this page, Your Moves</div>
+          <div class="sh-d">Exactly what the loop stopped and handed back to you: the review pass, the decisions, and the standing gates.</div>
+          <a href="#ch8">Jump to Chapter 8 &middot; Your Moves</a>
+        </div>
+        <span class="sh-min">3 min</span>
+      </li>
+      <li>
+        <div>
+          <div class="sh-t">Open the internal master, sections S02 and S02B</div>
+          <div class="sh-d">The full internal narrative and the $4B to $10B evidence slide behind the pitch line.</div>
+          <a href="https://winnsolutionsadmin.github.io/fr-446d3c54/internal-master.html" target="_blank" rel="noopener">https://winnsolutionsadmin.github.io/fr-446d3c54/internal-master.html</a>
+        </div>
+        <span class="sh-min">6 min</span>
+      </li>
+      <li>
+        <div>
+          <div class="sh-t">Read the C1 entity and IP lawyer letter</div>
+          <div class="sh-d">The one move that opens the legal perimeter: the recommendation plus the 8 questions for counsel.</div>
+          <span class="path"><b>concept repo</b> &middot; 07-roadmap/W2-entity-equity/entity-ip-decision-packet-2026-07-24.md</span>
+        </div>
+        <span class="sh-min">3 min</span>
+      </li>
+    </ol>
+  </section>
 
-<!-- ============ 03 RUNNING SYSTEM ============ -->
-<section class="slide" id="s03">
-  <div class="snum">S03</div>
-  <div class="eyebrow reveal">The running system</div>
-  <h2 class="reveal">This isn't a plan on paper. A reference implementation <em>runs today,</em> and it's inspectable live.</h2>
-  <p class="body reveal">All figures below are <span class="tag m">MEASURED</span> on the reference implementation: one operator directing a fleet of agents across a working consulting operation. n=1, and we say that plainly. It proves the pattern, not customer demand.</p>
-  <div class="grid g3 reveal">
-    <div class="card brass"><div class="big">99.3<span class="unit">%</span></div><div class="lbl">objective-alignment score on the engine's first run: 275 of 277 commits scored against stated objectives. Self-assessed by internal scoring, not external validation.</div></div>
-    <div class="card brass"><div class="big">343</div><div class="lbl">meeting notes processed into decisions, tasks, and memory by the capture pipeline</div></div>
-    <div class="card brass"><div class="big">296</div><div class="lbl">skills in a registry that improves itself nightly</div></div>
-  </div>
-  <div class="grid g3 reveal">
-    <div class="card"><div class="big">322</div><div class="lbl">commits on the always-on fleet dashboard, the estate's most active repo; the internal agent OS has been enforced org-wide since 2026-07-01</div></div>
-    <div class="card"><div class="big">23<span class="unit">-day</span></div><div class="lbl">unbroken streak on the achievement engine, live since April</div></div>
-    <div class="card"><div class="big">$25K<span class="unit">/mo</span></div><div class="lbl">signed consulting retainer on the existing book; the delivery machine has paying clients</div></div>
-  </div>
-  <div class="card brass reveal" style="margin-top:14px;max-width:800px"><h3 style="color:var(--brass)">One concrete example: the insurance workload</h3><p style="font-size:14.5px;color:#C4D0D8">An insurance-operations agent runs today on the operator's own companies <span class="tag m">MEASURED</span>: it chases carriers, prefills applications, tracks quotes, and keeps every follow-up alive, and a human gates anything that binds, pays, or signs. That is the product in one sentence: the burden moves to the agent; the judgment and the relationship stay with the person.</p></div>
-  <div class="thesis reveal">This operation is the demonstration. One is a small number and we won't pretend otherwise, but one running system beats any number of decks, and this is the only one like it we know of that's running.</div>
-</section>
+  <!-- STATS -->
+  <section class="stats" aria-label="Journey stats">
+    <div class="stat"><div class="n">~14h</div><div class="l">wall-clock, intake to armor</div></div>
+    <div class="stat"><div class="n">~2.3M</div><div class="l">subagent output tokens</div></div>
+    <div class="stat"><div class="n">4</div><div class="l">counsel panels</div></div>
+    <div class="stat"><div class="n">44</div><div class="l">commits, concept repo in-window</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">external sends, hootl held</div></div>
+    <div class="stat"><div class="n">6</div><div class="l">omnara sessions</div></div>
+    <div class="stat"><div class="n">109</div><div class="l">coverage rows, zero drops</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">founder file edits</div></div>
+  </section>
+  <p class="stats-note">Instrumentation is partial and honest. Figures are chipped from the ledger B8 row; per-artifact timestamps and per-lane cost attribution were not captured and are on the telemetry build list (C7).</p>
 
-<!-- ============ 04 MARKET ============ -->
-<section class="slide" id="s04">
-  <div class="snum">S04</div>
-  <div class="eyebrow reveal">Where the market actually is</div>
-  <h2 class="reveal">The noise says everyone is doing this. Two independent, correctly scoped signals say almost no one is operating.</h2>
-  <div class="grid g2 reveal">
-    <div class="card"><div class="big">~23<span class="unit">%</span></div><div class="lbl">of organizations report <b>scaling</b> AI agents beyond pilots <span class="tag s">SURVEY</span> McKinsey. An organization-level adoption rate.</div></div>
-    <div class="card"><div class="big">~5<span class="unit">%</span></div><div class="lbl">of integrated GenAI pilots show <b>measurable P&amp;L impact</b> <span class="tag s">SURVEY</span> MIT NANDA. A pilot-level value-capture rate.</div></div>
-  </div>
-  <div class="reconcile reveal">These are two different lenses on two different populations, and we do not multiply them. One counts organizations that have moved past piloting; the other counts pilots that reached the P&amp;L. Different denominators, different units, different definitions of success. Read side by side, not combined, they say the same thing: deployment is uncommon, and durable value capture is rarer still.</div>
-  <p class="body reveal">The field is wide open, and it is widest in exactly the place a regulated institution can least afford to move carelessly: adoption at scale, under control. Being early here compounds. Being on time doesn't.</p>
-</section>
+  <!-- LEGEND -->
+  <section class="legend" aria-label="How to read the status chips">
+    <div class="lg-title">Reading the chips</div>
+    <ul>
+      <li><span class="chip s-live">Live</span> hosted, open it in your browser now</li>
+      <li><span class="chip s-draft">Draft</span> in-repo working document, read it in the concept repo</li>
+      <li><span class="chip s-gated">Gated</span> decision-ready, needs a named external gate before it is acted on</li>
+      <li><span class="chip s-await">Awaiting-founder</span> waiting on your call or your action</li>
+    </ul>
+  </section>
 
-<!-- ============ 05 PREMISE ============ -->
-<section class="slide" id="s05">
-  <div class="snum">S05</div>
-  <div class="eyebrow reveal">The premise</div>
-  <h2 class="reveal">Let's say the uncomfortable part ourselves: <em>the frontier labs can build this.</em></h2>
-  <p class="lead reveal">That's not a risk to this plan. It's the premise of the market. Capability doesn't install itself. A company needs someone who knows its people, its meetings, its objectives, and its risk lines, and who stays accountable while the org changes underneath. That's a companion role, not a platform feature.</p>
-  <ul class="tight reveal">
-    <li><b>The premise is now visibly true:</b> Anthropic launched a $1.5B enterprise AI services joint venture with Blackstone, Hellman &amp; Friedman, and Goldman Sachs <span class="tag v">VENDOR</span> company announcement + CNBC, 2026-05-04. The labs themselves are entering the transition motion.</li>
-    <li><b>Hygiene, in one line, because that's what it is:</b> the system can swap the model vendor it runs on, and every account and key is audited. A hedge, not a fear posture.</li>
-  </ul>
-  <div class="thesis reveal">The labs build the capability. Someone still has to walk Anchorage through the transition. We're that companion, and we hand you a head start your competitors have to earn later, at a worse time.</div>
-</section>
+  <!-- CH1 VISION -->
+  <section class="chapter" id="ch1">
+    <div class="ch-head"><span class="ch-num">01</span><h2 class="ch-title">The Vision</h2></div>
+    <p class="ch-lead">On 2026-07-23 the founder dropped a stream-of-thought braindump: build the company by applying it, in the box, to one 750-person regulated institution, Anchorage, and keep the software as a reusable offering. A company being born as it builds Anchorage. The next day he issued corrections that reset the source of truth: Anchorage only, never conservatize an idea on legality, model the $4B to $10B path aggressively, and cover every single item or say why not. This chapter is the primary source and the law that governs everything after it.</p>
 
-<!-- ============ 06 THE ANCHORAGE SEQUENCE ============ -->
-<section class="slide" id="s06">
-  <div class="snum">S06</div>
-  <div class="eyebrow reveal">How this actually runs at Anchorage</div>
-  <h2 class="reveal">Five moves, in order. Each one earns the next.</h2>
-  <div class="step reveal"><div class="num">1</div><div class="t"><b>C-level buy-in first.</b>A chief-of-staff seat for the executive: their meetings, their follow-through, one gated workflow. Evidence lands on the CEO's own calendar before anything scales.</div></div>
-  <div class="step reveal"><div class="num">2</div><div class="t"><b>Blessing for an agentic review of engineering.</b>With the C-suite's approval, an agentic evaluation of the engineering organization, run by the engineering collaborator whose team he measured at a large output gain <span class="tag u">UNVERIFIED</span>. Scoped, consented, and reversible.</div></div>
-  <div class="step reveal"><div class="num">3</div><div class="t"><b>Learn the entire org, top to bottom.</b>The founder maps Anchorage as an organization: its rollup, its goals, how work actually moves, where the burden sits. This is the discovery that makes the in-the-box build fit Anchorage and no one else.</div></div>
-  <div class="step reveal"><div class="num">4</div><div class="t"><b>Build the in-the-box Anchorage solution + the rollout.</b>A dedicated system that only works for Anchorage, plus a full agentic-organization rollout strategy. The software is retained as a reusable offering; Anchorage gets the first, deepest instance.</div></div>
-  <div class="step reveal"><div class="num">5</div><div class="t"><b>Train everyone while building the tools.</b>Every layer of the org learns to operate the system as it comes online. Education is not a phase after the build; it is how the build lands.</div></div>
-  <div class="thesis reveal">This is not a product you buy and install. It is a transition you run with a companion who is accountable for the whole of it, on your ground, at your pace.</div>
-</section>
+    <details class="source">
+      <summary>Read the full braindump, verbatim <span class="tw">&#9654;</span></summary>
+      <div class="source-body">
+        <div class="vb-meta">Founder stream-of-thought via Omnara &middot; 2026-07-23 &middot; typos intact &middot; primary source, immutable</div>
+        <blockquote class="verbatim">
+      <p>Lookup my concept of agentic organization we build. Here is a ton of data to build into it. Side thought, please have another Omnara session agent look over this and think about how to improve our session manager concept with these considerations. There are many thoughts about how we create prompts and it identifies part way through conversation whether this pertains to an existing repo auto assigns it and figures out how to build in it in a manner that doesn’t collide or checks for existing work being done via subagents (minimizing context spread).</p>
+      <p>We build the machine through the process of applying it to anchorage. We learn how anchorage operates as an organization, we deeply analyze, and we get It to the point that tasks are at front of person, they can see how many components they can currently do. A project is agreed upon upfront between management and the staff. There is an individual human audit through the process. The human is required to give a long prompt and interview of what the product should be, what their vision is, and what they want to look towards. The onboarding then does deep research and variables are counseled against adversary and hardness. Attack every view, defend every view, allow counsel to judge based on the presented materials, take user input, final output. All concepts of the project and plan are then appropriated. Clickup tasks, responsible parties  For example, a ton of this information is just flow of thought. What we should be really doing is building around this. All ideas/concepts, how or what do they relate to? An existing repo? How do we get updated files to each blast radius item and how is this autonomously done via agentic. The agent pushes completion and responsibilities upon confirmation of the employee. See slack tag? The agent should tag the other employees agent to notify them that they’re unblocked and show the current items. In addition to the current items, show the priority levels and what is most impactful to your business/organization.</p>
+      <p>How do we make an algorithm that computes average value of a contribution towards a goal when not all goals are revenue bearing? Or should they be? Perhaps there’s a point system of attribution value and each company goal can have point value attributions. Perhaps there’s a kudos system where kudos given/received demonstrate peer satisfaction of output in the form of a friendly reputation system. This may not be legal, but backend data review might be. This might be the way to determine which employees adopt AI versus not, and which are willing to learn.   I want there to be a teaching and learning dynamic of this. I want to teach everyone how to use it and give examples of my work. I want to show examples for every concept. I want there to be a tutorial guide of the way I code (and include ways I code and how they improve) in this educational playbook component. Make it levels/tiers. Give feedback or score ratings etc. that show your performance scores and how well you are adopting/applying agentic technology and process. We don’t mandate agentic adoption. People can manually go in clickup and mark tasks complete. However, performance and efficiency is to be calculated based on the time spent on P0’s, time spent blocking (but this maybe backend so we determine bottlenecks or can compare performance of agentic employees versus not, we should also heavily consider what datapoints would be valuable to the org in terms of who is holding things back)</p>
+      <p>I see this being a very simple user experience. I see us building it in tandem to building something for anchorage. I want to retain the software as an offering. I want to also consider that I have Carter and Nick who are interested in being a part of this. You can lookup notes, but I am the founder. It is my idea, my vision. I went to Nick who is a gamification expert and psychology master to see his interest in gamifying productivity (or incentivizing) (we need to lookup legal considerations on all this). Can we assign bonuses to productivity scoring if it is unbiased? What data can they get from their employees, how could they find the best practices and best contributing prompters, and find out how they can leverage that information organizationally. Data ownership for the company. But how do I build this in a way that I ensure we don’t facilitate the eventual layoff of employees who replace themselves with their skills and workflows? I want to teach employees simultaneously through education how to best leverage their creativity in ways that AI cannot and to prove what is of value to an organization through the agentic era. What is their employer going to value most in terms of prompting, token efficiency, creative minds, creative contributions… perhaps eventually we get to a point where creative contribution and critical thinking is the primary of value to an agentic organization. Can we consider how we slowly incentivize and ramp up creative session opportunities?</p>
+      <p>For Carter I went to him because he’s 16x’d the output of his engineering team. He is an engineer but he’s building all this agentic stuff. You can lookup what he’s building form a recent talk but my thought is that we first get c-level buy-in. Then we get their blessing to do the agentic review/evaluation of the engineering team (Carter). Meanwhile I learn the entire org, rollup, goals, everything from top to bottom and build an extreme dedicated in-the-box solution that only works for anchorage, and a full agentic organization rollout strategy in which I train everyone and build the tools while we do it.</p>
+      <p>Think of this as a company being born as it builds anchorage. This could be a massive software play which requires its own deep-research. How do we monetize this? How do we build a software? If we want to go big enterprise, what type of funding would we raise? At what point is most advantageous? After the case study is built? Or do we build partially while rolling out since Anchorage is a 750 person company. This should influence intake questions, etc.</p>
+      <p>I need to also figure out what is reasonably fair for Carter’s/Nick’s contributions. Carter wants a co-founder spot and I can see him earning a co-founder spot based on success with the company as I have no desire to do that sector and he works better with engineers.</p>
+      <p>For Anchorage, my pitch is let’s turn anchorage from a 4b company to a 10b company. And a deep-research and thoroughly counseled model and prediction of how we pragmatically get there based on output improvement and the various strategies I’ve incorporated. Also think about how Anchorage would be the first agentic org internally and how we could then help anchorage to become a McKinsey with. Me being the teacher. The educator. The one who helps people understand.</p>
+      <p>Eventually I see it that meeting time will be creative time. All decisions and execution takes place after the humans leave the room and the agents run counsel and strategize a gameplay. Both humans then provide additional creative input rounds. Agents run routine once more, come back with final set of questions. Humans provide input. At human input phases, it should present other considerations from the other human that may sway the other human or ask their thoughts on a specific point of feedback. Once 3-5 rounds of this is done, the agents finalize an output</p>
+      <p>think about task triaging and how to Notify an employee when an email comes in that was blocking a P0. Adjust priority notify of critical element. This is an important item for you.</p>
+      <p>C-levels don’t need to be doing this. Their assistants need to do it for them, and then the assistant distills into the manner which their c-level will best receive it. All priorities are audited by c-levels/their assistants. Tasks are then run downstream. This is a larger correspondence platform. Is there a combination of tools like clickup, Hubspot, linear, mermaid, etc. which could piecemeal an early solution but frontend of a product? How would we maintain centralized data, com, shared skills, agentc help (i.e. use my agent for first pass review of things I tend to find critical), considerations only.</p>
+      <p>I also need to fully update an animated pitch deck and white paper on this concept as a business model as to how I would sell anchorage on this. Run this on another Omnara work branch but complement it with deep research on the deck type and what would be best presented to a c-level team as a pitch deck, with a version of a docx/whitepaper, something for all audience types. Research best practices for each audience and how this gets conveyed. Everyone would need to learn about this in the organization. Deep-research the best ways to structure that and build out plans on how we would deploy the training and involve deep research teaching concepts and my various points of reference.</p>
+      <p>Strategize what existing skills we have and ways we can update them or make workflows out of them to make this more efficient.</p>
+      <p>Consider how each layer of the organization would need to be taught different as to what ways they could improve. Think about the questions I’d need to ask them or what I should try to learn when interviewing them. Pain points etc. Again how do we possibly score HR performance? How can we encourage compete employees or award bonuses based on scorings?</p>
+      <p>Goal of all of this, is to analyze all of the above information. Create a plan as to how to best approach, divide and conquer making a plan for.a service and software out of this concept. The reason for plan of plan is because this is very scattered, it needs to be first organized into how we structure the request for a plan and how we capitalize on every element thoroughly, be token efficient in the plan/strategy, and deploy swarms effectively and build this quickly while leveraging a fable 5 orchestrator, fable.5 as necessary for items, highest level opus as necessary, highest level sonnets when necessary or for swarms.. You can also ask questions of clarity about anything if it would help.</p>
+        </blockquote>
+      </div>
+    </details>
 
-<!-- ============ 07 ONBOARDING ENGINE ============ -->
-<section class="slide" id="s07">
-  <div class="snum">S07</div>
-  <div class="eyebrow reveal">The onboarding engine, the signature</div>
-  <h2 class="reveal">Every project starts with a human's vision, and ends as governed tasks with named owners. Here is the loop between.</h2>
-  <div class="step reveal"><div class="num">1</div><div class="t"><b>Vision interview.</b>The human gives a long prompt and interview: what the product or initiative should be, their vision, what they want to look toward. The system agrees the project's scope upfront between management and staff.</div></div>
-  <div class="step reveal"><div class="num">2</div><div class="t"><b>Deep research.</b>The concept is researched against the estate and the world: what it relates to, what already exists, which repo or workstream it belongs in.</div></div>
-  <div class="step reveal"><div class="num">3</div><div class="t"><b>Adversarial counsel.</b>Attack every view, defend every view, let a counsel model judge on the presented materials. Assumptions are hardened before a single task is written.</div></div>
-  <div class="step reveal"><div class="num">4</div><div class="t"><b>User input, then final output.</b>The human reviews, corrects, and signs off. Nothing is finalized without the human's edit.</div></div>
-  <div class="step reveal"><div class="num">5</div><div class="t"><b>Auto-appropriated into work.</b>The final plan becomes ClickUp tasks with responsible parties, priorities, and business impact attached, routed to each affected item across its blast radius.</div></div>
-  <div class="thesis reveal">A stream-of-thought becomes a governed plan with owners, without a project manager reformatting it by hand. The human supplies vision and judgment. The system supplies structure and reach.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Founder braindump, filed verbatim</h4>
+          <p class="e-what">The origin document, in the founder's own words, typos intact. Everything downstream traces here.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">7 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 00-call-notes/2026-07-23-founder-braindump-anchorage-first.md</span></div>
+    </article>
 
-<!-- ============ 08 OPERATING LOOP ============ -->
-<section class="slide" id="s08">
-  <div class="snum">S08</div>
-  <div class="eyebrow reveal">The operating loop, day to day</div>
-  <h2 class="reveal">Work is at the front of every person, and the system moves it between them without anyone chasing.</h2>
-  <ul class="tight reveal">
-    <li><b>Tasks at the front of the person.</b> Each employee sees their current components, their priority levels, and what is most impactful to the business, on one calm surface. No hunting through tools for what matters now.</li>
-    <li><b>Blast-radius propagation.</b> When a decision or a file changes, the system figures out every item it affects and pushes the update to each one, autonomously, instead of relying on someone to remember who needs to know.</li>
-    <li><b>Agentic unblock notifications.</b> On an employee's confirmation that work is done, their agent tags the next, now-unblocked employee's agent in Slack with the current items, the priorities, and the business impact. The handoff happens without a status meeting.</li>
-    <li><b>P0-blocking email triage.</b> When an inbound email arrives that was blocking a P0, the system adjusts priority and notifies the person of the critical element. The thing that was silently holding up the most important work surfaces itself.</li>
-  </ul>
-  <div class="thesis reveal">Coordination is the tax every growing company pays. This is the system paying it for you, and gating anything consequential back to a human before it acts.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">The 2026-07-24 corrections</h4>
+          <p class="e-what">The follow-up rulings that superseded the prior corpus where it conflicted: Anchorage only, tandem and separate engagement with buy-in already in hand, and the Carter facts.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">5 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 01-overview/product-concept-overview-2026-07-08.md (section 13, supersessions)</span></div>
+    </article>
 
-<!-- ============ 09 CREATIVE TIME ============ -->
-<section class="slide" id="s09">
-  <div class="snum">S09</div>
-  <div class="eyebrow reveal">Meeting time becomes creative time</div>
-  <h2 class="reveal">Humans give the vision and leave the room. The agents do the strategy work. The humans come back for the creative calls.</h2>
-  <div class="step reveal"><div class="num">1</div><div class="t"><b>Humans set direction, then step out.</b>The room is for vision and creative input, not for the grinding execution work that follows.</div></div>
-  <div class="step reveal"><div class="num">2</div><div class="t"><b>Agents run counsel and strategize.</b>After the humans leave, the agents deliberate, plan the game, and return with a first output and a focused set of questions.</div></div>
-  <div class="step reveal"><div class="num">3</div><div class="t"><b>Creative input, 3 to 5 rounds.</b>Humans provide input; at each round the system surfaces the other human's considerations, either to sway them or to ask their view on a specific point. The agents finalize only after the rounds are done.</div></div>
-  <div class="thesis reveal">The scarce resource in an agentic org is human creativity and judgment. This design spends the humans on exactly that, and spends the agents on everything else.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">The binding directives</h4>
+          <p class="e-what">Never conservatize an idea on legality (map it, do not gate it), Anchorage only, this session is the source of truth, and cover every item or state why not. Captured as standing law.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">4 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; memory-bank/decisions/0003-founder-structure-funding-positioning.md</span></div>
+    </article>
 
-<!-- ============ 10 EXECUTIVE LAYER ============ -->
-<section class="slide" id="s10">
-  <div class="snum">S10</div>
-  <div class="eyebrow reveal">The executive layer</div>
-  <h2 class="reveal">C-levels never operate this directly. Their assistants' agents do, and distill it into the form each executive best receives.</h2>
-  <p class="lead reveal">The system is a correspondence platform as much as a task engine. It routes to each executive through their assistant's agent, in their preferred shape: a brief, a call, a one-line priority. Every priority is audited by the C-level or their assistant before tasks run downstream.</p>
-  <ul class="tight reveal">
-    <li><b>Distilled, not dumped.</b> The executive sees decisions, questions, and priorities in the format that fits how they work, not a raw feed.</li>
-    <li><b>Audited before it runs.</b> Priorities pass a human check at the executive layer; only then do tasks flow down the org.</li>
-    <li><b>The executive's own first-pass reviewer.</b> An executive can put their own agent in front of the things they tend to find critical, so their judgment scales without their calendar.</li>
-  </ul>
-  <div class="thesis reveal">The busiest people in the building get the most leverage and touch the machinery the least. That is the point of a companion, not a tool.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">The origin thread</h4>
+          <p class="e-what">The plan-of-plan: both verbatim founder prompts, the distilled directives, and the checkpoints. The narrative spine this reading room is built from.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">10 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>miscellaneous repo</b> &middot; threads/2026-07-23-agentic-org-plan-of-plan.md</span></div>
+    </article>
+  </section>
 
-<!-- ============ 11 REWARD NOT REPLACE ============ -->
-<section class="slide" id="s11">
-  <div class="snum">S11</div>
-  <div class="eyebrow reveal">Reward, not replace</div>
-  <h2 class="reveal">Every employee has heard the quiet threat inside "AI transformation." This system <em>inverts it.</em></h2>
-  <p class="lead reveal">Adoption earns recognition, standing, and time back. This program is designed so adoption increases an employee's value, and we structure the engagement to that end. Contribution is scored so that value is visible, and the scoring is built to protect people from the failure modes scoring systems always have.</p>
-  <ul class="tight reveal">
-    <li><b>Point-value attribution per goal.</b> Company goals carry point values so a contribution's worth can be computed even when the goal is not revenue-bearing. Not all value is revenue, and the scoring says so.</li>
-    <li><b>Kudos and peer reputation.</b> A friendly reputation signal: kudos given and received show peer satisfaction with the output, a human check on the machine's math.</li>
-    <li><b>Adoption and efficiency analytics, backend and legal-gated.</b> P0 time, blocking time, and bottleneck data help the org find where work stalls and which practices to spread, held behind a legal review before any of it informs a person-level decision.</li>
-    <li><b>Adoption is never mandated.</b> Anyone can mark tasks complete manually in ClickUp and the system still works. The game rewards the willing; it never punishes the rest.</li>
-  </ul>
-  <div class="thesis reveal">Meta's internal AI-token leaderboard, 85,000+ employees, was shut down after press exposure <span class="tag v">VENDOR</span> Fortune 2026-04-09. Surveillance with points fails. Reward with consent is the opposite design, and it's the one we build.</div>
-</section>
+  <!-- CH2 PLAN -->
+  <section class="chapter" id="ch2">
+    <div class="ch-head"><span class="ch-num">02</span><h2 class="ch-title">The Plan</h2></div>
+    <p class="ch-lead">Scattered input became an auditable structure. Every sentence from both braindumps was mapped to a workstream in a 109-row coverage matrix with zero silent drops, then driven by a HOOTL manifest and an evidence-per-row master checklist. The W0 to W12 roadmap is the dependency spine the loop executed against.</p>
 
-<!-- ============ 12 EDUCATION PLAYBOOK ============ -->
-<section class="slide" id="s12">
-  <div class="snum">S12</div>
-  <div class="eyebrow reveal">The education playbook</div>
-  <h2 class="reveal">The durable human value in an agentic org is creativity and critical thinking. We teach exactly that, deliberately.</h2>
-  <p class="lead reveal">A tiered, leveled curriculum built on the founder's own worked examples: how he codes, how those methods improve, shown for every concept. Role-based tracks, competency-based levels, performance scores that show how well someone is adopting and applying the process.</p>
-  <ul class="tight reveal">
-    <li><b>Tiers and levels, by role.</b> Executives, managers, and individual contributors each learn a different thing, because each improves in a different way. Convergent enterprise practice is a four-track model, not one company-wide course <span class="tag s">SURVEY</span> practitioner sources, 2026.</li>
-    <li><b>Worked examples for every concept.</b> The founder's own work is the reference material: a tutorial of how he prompts, structures, and improves, so people learn from a real operator, not a slide.</li>
-    <li><b>Teach the human edge.</b> The curriculum's spine is creativity and critical thinking, the value an organization prizes most as agents absorb the routine.</li>
-    <li><b>Designed so adoption increases an employee's value.</b> Creative-session opportunities ramp up as agentic leverage grows. The more the agents do, the more the humans are moved toward the work that AI cannot do. That ramp is a design commitment of the program, not an afterthought.</li>
-  </ul>
-  <div class="thesis reveal">The fear that kills AI adoption is "I am training my replacement." We answer it structurally: the more you adopt, the more your job becomes the part of it that is unambiguously yours.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">109-row coverage matrix</h4>
+          <p class="e-what">Every item from both braindumps mapped to a workstream with a home and a status. Zero silent drops; any exclusion carries a stated reason. Independently audited.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">12 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 10-analysis/coverage-matrix-2026-07-24.md</span></div>
+    </article>
 
-<!-- ============ 13 PRODUCT LAW ============ -->
-<section class="slide" id="s13">
-  <div class="snum">S13</div>
-  <div class="eyebrow risk reveal">Product law: how trust is earned</div>
-  <h2 class="reveal">For a regulated institution this is the first slide, not the last. Gates and a graduation bar do for agent work what covenants do for capital.</h2>
-  <div class="law reveal"><div class="gate"></div><div class="t"><b>Policy and architecture require a human gate before any agent acts on money in any amount, anything irreversible, or any external action above a de-minimis line.</b> No fee or tier is designed to purchase an exception.</div></div>
-  <div class="law reveal"><div class="gate"></div><div class="t"><b>The system is designed to fail open to surfacing.</b> Decisions, money, deadlines, and irreversible items are designed so they cannot be silently suppressed.</div></div>
-  <div class="law reveal"><div class="gate"></div><div class="t"><b>Autonomy is earned per decision class, never assumed.</b> An agent graduates only after matching the human's actual choice 90% of the time across 20 or more repetitions, with executive sign-off, and a single disagreement demotes it back to a full human gate.</div></div>
-  <div class="law reveal"><div class="gate"></div><div class="t"><b>Governance designed to anticipate supervisory expectations.</b> The control loop maps onto NIST AI RMF (Govern, Map, Measure, Manage), anticipates established model-risk-management supervisory expectations, and aligns with NYDFS-style cyber expectations <span class="tag s">SURVEY</span> framework sources, 2026. The audit trail is the evidence, not a slogan.</div></div>
-  <div class="card reveal" style="margin-top:22px;max-width:800px"><h3>The governance and consent annex, a named artifact</h3><p style="font-size:14.5px;color:#C4D0D8">Not a policy described for later: a document that exists now. Data-flow map, access model, retention and deletion timelines, tenant isolation, all-party consent on any recording, and capture opt-in decided per workflow before day one. Legal, board, and merger-related meetings are walled out of capture by policy. This is the artifact your security lead and counsel review before any production data moves; it exists in working draft today <span class="tag m">MEASURED</span> in this corpus.</p></div>
-  <div class="thesis reveal">Every vendor says "human in the loop." Almost none can show you the graduation ledger. We can, and for a crypto-custody bank that auditable difference is the whole conversation.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">HOOTL manifest and master checklist</h4>
+          <p class="e-what">The loop's constraint manifest (goals, owned deadlines, budgets, termination criteria, hard gates) and the evidence-per-row checklist. The ledger this page is built from.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">10 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>miscellaneous repo</b> &middot; threads/2026-07-24-execution-loop.md</span></div>
+    </article>
 
-<!-- ============ 13B PER-SEAT / DILIGENCE ============ -->
-<section class="slide" id="s13b">
-  <div class="snum">S13B</div>
-  <div class="eyebrow reveal">What each seat in the room gets, and what would rightly kill it</div>
-  <h2 class="reveal">A regulated C-suite doesn't buy a story. Each seat has one question, and a way to disqualify a wrong answer.</h2>
-  <table class="tbl reveal">
-    <tr><th>Seat</th><th>What they get</th><th>What we refuse to do (because it would kill it for them)</th></tr>
-    <tr><td>CEO<span class="role">The bet</span></td><td>A first-mover position among regulated-custody institutions operationalizing agentic workflows under bank-grade human governance, with a companion accountable for the whole transition.</td><td>Assert a transformation number we can't model. The S02 wager is a hypothesis we build together, not a headline.</td></tr>
-    <tr><td>CFO<span class="role">The economics</span></td><td>Value expressed as ranges and scenarios, dollarized only at Anchorage's own stated rate, against a signed baseline.</td><td>Sell "magic ROI" or bank uncaptured "time saved." No fee or multiplier ships until the baseline signs.</td></tr>
-    <tr><td>CRO / Chief Risk<span class="role">The control</span></td><td>Go / no-go gates on every consequential action, a written kill criterion, and earned-then-revocable autonomy per class.</td><td>Ship "trust us" AI with no gate. Nothing touching money, irreversible, or a consequential external action runs without a human.</td></tr>
-    <tr><td>GC / CCO<span class="role">The record</span></td><td>An append-only audit trail that reconstructs what an agent saw, why it proposed, and who approved, plus the consent annex.</td><td>Leave a decision unreconstructable. If the stream can't prove it happened, it didn't.</td></tr>
-    <tr><td>CTO / CISO<span class="role">The isolation</span></td><td>Tenant isolation, per-tenant keys, SSO/RBAC, zero pooled client-data learning, a swappable model vendor.</td><td>Pool Anchorage's data into anyone else's, or hide a dependency behind a demo.</td></tr>
-    <tr><td>COO<span class="role">The adoption</span></td><td>A rollout that trains every layer while it builds, with a manual path that always works and no mandate.</td><td>Force adoption or measure people by activity. Reward, never surveillance.</td></tr>
-  </table>
-  <div class="thesis reveal">The dominant reason a pitch like this dies is not that the idea is dull. It's that the room can't see a safe, governable path from concept to production <span class="tag s">SURVEY</span> C-suite-diligence sources, 2026. This page is that path, seat by seat.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">W0 to W12 roadmap map</h4>
+          <p class="e-what">Thirteen workstreams, the dependency spine, and per-workstream backlogs, including the W11 Anchorage account and W12 education lanes added on 2026-07-24.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">9 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/ROADMAP.md</span></div>
+    </article>
 
-<!-- ============ 14 LONGER ARC ============ -->
-<section class="slide" id="s14">
-  <div class="snum">S14</div>
-  <div class="eyebrow reveal">The longer arc</div>
-  <h2 class="reveal">Anchorage takes a first-mover posture among regulated institutions running agentic workflows internally under bank-grade human governance. Then it teaches the transition to others.</h2>
-  <p class="lead reveal">Once Anchorage operates as an agentic organization, that capability is itself an asset. Anchorage can become a reference and a guide for its peers: the McKinsey of the agentic era for regulated finance, with the founder as the teacher and educator who helps people understand the transition they just lived.</p>
-  <ul class="tight reveal">
-    <li><b>First-mover, then standard-setter.</b> The institution that crosses first, under control, is the one others ask how.</li>
-    <li><b>The software is retained as an offering.</b> The in-the-box Anchorage build generalizes into a product other institutions can adopt, with Anchorage's lessons compounded into it.</li>
-    <li><b>Education as the export.</b> The teaching playbook, proven inside Anchorage, becomes something Anchorage can extend outward.</li>
-  </ul>
-  <div class="thesis reveal">The near-term ask is a design partnership. The horizon it opens is a position: Anchorage as the institution that knew how to bring an organization through the AI transition, and could show the rest of its industry the way.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Research injection map</h4>
+          <p class="e-what">Where deep-research sonnet swarms enhance each output as injected context. The answer to "did we deep-research ways to make the plan itself better."</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">5 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 10-analysis/research-injection-map-2026-07-24.md</span></div>
+    </article>
+  </section>
 
-<!-- ============ 15 BUSINESS MODEL ============ -->
-<section class="slide" id="s15">
-  <div class="snum">S15</div>
-  <div class="eyebrow reveal">Business model</div>
-  <h2 class="reveal">Consulting plus software, in that order, <em>on purpose.</em> A company born on Anchorage's ground.</h2>
-  <ul class="tight reveal">
-    <li><b>Consulting revenue leads.</b> It funds the build and generates the evidence at the same time. The precedent is signed: a $25K/mo retainer on the existing book <span class="tag m">MEASURED</span>. The product itself has no revenue yet; we say that plainly.</li>
-    <li><b>The software is retained as a reusable offering.</b> Anchorage gets the first, deepest, in-the-box instance; the generalized product is the longer play.</li>
-    <li><b>Funding follows achievement, not the other way around.</b> Whether to raise for a big-enterprise build, and when, is an open question keyed to the case study. Building partially during the Anchorage rollout is on the table precisely because Anchorage is a 750-person org and the rollout itself generates the evidence a raise would need.</li>
-  </ul>
-  <div class="cond reveal">OPEN, NOT ANSWERED. Monetization model, pricing, raise size, and raise timing are deliberately unsettled on this slide. They resolve against the Anchorage case study, not ahead of it. No number here is a term.</div>
-  <div class="thesis reveal">A business model where the operator eats the same risk as the client, and builds the company by delivering for the client, is rare in consulting and rarer in software. That alignment is the product working on its own P&amp;L.</div>
-</section>
+  <!-- CH3 MODEL -->
+  <section class="chapter" id="ch3">
+    <div class="ch-head"><span class="ch-num">03</span><h2 class="ch-title">The Model</h2></div>
+    <p class="ch-lead">The pitch line, turn a $4B company into a $10B one, is the most delicate sentence in the venture, so it was built like a case, not claimed like a boast. A first value model went to a six-model counsel panel, came back with ambition intact and six unanimous fixes, and was rebuilt from the $10B identity backward into sourced components. Every number carries a MEASURED, SURVEY, or VENDOR lineage chip; the ghost 30 to 40% stat was excised and the Dimon $2B figure was secured to a real source. The design principle: the distribution carries the aggression, so the sensitivity table does the arguing, not a single point estimate.</p>
 
-<!-- ============ 16 PEOPLE ============ -->
-<section class="slide" id="s16">
-  <div class="snum">S16</div>
-  <div class="eyebrow reveal">The people behind it</div>
-  <h2 class="reveal">One founder whose vision this is, and two originating members who earn their place by contribution.</h2>
-  <table class="tbl reveal">
-    <tr><th>Person</th><th>Role</th></tr>
-    <tr><td>Jarred Winn<span class="role">Founder</span></td><td>The vision and the operating estate are his. He runs the reference implementation, owns the Anchorage relationship and the org-learning, delivers the build, and is the teacher across the education playbook.</td></tr>
-    <tr><td>The engineering collaborator<span class="role">Originating member · earned co-founder path</span></td><td>Owns the agentic engineering-evaluation lane. He measured his own engineering team at a large output gain <span class="tag u">UNVERIFIED</span> and builds agentic engineering tooling. A co-founder seat is a path he can earn through success, not a fixed grant. Any engagement touching Anchorage rides an explicit written conflict-of-interest disclosure.</td></tr>
-    <tr><td>The game-design collaborator<span class="role">Originating member</span></td><td>Gamification and organizational psychology. Owns the contribution-scoring and adoption mechanics, and the anti-abuse design, having watched a published metric of his own get gamed by professionals.</td></tr>
-  </table>
-  <p class="body reveal">Entity formation, IP assignment, and the contribution-earns-equity framework for the originating members are in motion, with founder control preserved. No fixed split is represented here or anywhere.</p>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Value model v1</h4>
+          <p class="e-what">The first pass at the $4B to $10B path, built to be attacked. Not deck-cleared on its own.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">8 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W11-anchorage-engagement/value-model-10b.md</span></div>
+    </article>
 
-<!-- ============ 17 ASK + SEQUENCING ============ -->
-<section class="slide" id="s17">
-  <div class="snum">S17</div>
-  <div class="eyebrow reveal">The ask, and how it sequences</div>
-  <h2 class="reveal">A scoped design partnership: Anchorage as a first-mover among regulated institutions operationalizing agentic workflows under bank-grade human governance. <em>This is not a software sale.</em></h2>
-  <p class="body reveal">Staged, priced-by-proof engagement is the only responsible shape at this evidence level. The room has one executable decision, stated plainly, with a pass as the honest alternative.</p>
-  <div class="branches reveal" style="grid-template-columns:2fr 1fr">
-    <div class="branch b"><span class="bl">The one decision</span><h4>The design-partner pilot</h4><p>A scoped 90-day design-partner pilot on one named workflow, chosen with Anchorage in week one, inside a read-scoped data sandbox: a signed baseline at intake; a named executive sponsor and workflow owner, with the founder on delivery; a day-30 evidence checkpoint and a day-60 review before any talk of scale; one preregistered KPI; and a written kill criterion in the SOW, with the fee priced by proof and reconciled to the day-30 result. The pilot generates the evidence; the bigger conversations follow the evidence. This is the single executable decision in the room.</p></div>
-    <div class="branch"><span class="bl">Or a pass</span><h4>A pass, and it's respected</h4><p>If this doesn't clear the bar today, passing is the discipline this deck praises. The structure doesn't expire; the next look is at measured day-30 evidence, not a new pitch. A pass costs the relationship nothing.</p></div>
-  </div>
-  <div class="cond reveal">SCOPE NOTE, internal-facing. Partnership structures beyond the pilot are a separate, counsel-gated conversation. This is a standalone, direct proposal to Anchorage; it rides no other engagement and depends on none (founder ruling 2026-07-24: no predecessor motion is live or referenced). Funding conversations with any outside investor are a completely separate track, papered separately, and never blended into this partnership.</div>
-  <div class="thesis reveal">The whole deck reduces to one arguable sentence: the evidence shown here justifies exactly the partnership being asked for, no more. An ask that matches its evidence is the rarest thing a decision-maker gets shown.</div>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Six-model deliberate panel</h4>
+          <p class="e-what">Attack every view, defend every view, judge on the materials. Verdict: ambition intact, six unanimous fixes, v1 owed a rebuild.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">10 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 05-counsel/2026-07-24-value-model-10b-panel.md</span></div>
+    </article>
 
-<!-- ============ 18 STATUS ============ -->
-<section class="slide" id="s18">
-  <div class="snum">S18</div>
-  <div class="eyebrow risk reveal">Status + provenance · internal page · strip before any send</div>
-  <h2 class="reveal">What blocks the send, and where every claim lives.</h2>
-  <ul class="tight reveal">
-    <li><b>Source:</b> this deck integrates the 2026-07-23 founder braindump (00-call-notes/2026-07-23-founder-braindump-anchorage-first.md) onto the counsel-verified concept corpus (concept-deck-v2 arc, overview v2, counsel verdicts 4/4). It is a NEW Anchorage-first version; the prior 2026-07-09 deck and whitepaper are preserved intact for side-by-side review.</li>
-    <li><b>The single most delicate line (S02):</b> the "$4B to $10B / ~2.5x" premise is UNVERIFIED and framed as a joint value-creation hypothesis, never a claim. The reverse-$10B requirements model now exists (value-model v2), with value-model counsel panel presentation rules applied and the securities counsel pass pending: S02 carries its structure (sum-of-parts by comp class, levers as drivers, the three-row sensitivity), and S02B its honestly-scoped evidence base. Every magnitude stays a labeled assumption signed at the intake baseline; no forward-looking value figure ships as a fact until the securities pass clears. Do not let it read as a forecast.</li>
-    <li><b>Founder decisions, RESOLVED 2026-07-24:</b> (1) Anchorage ONLY is the design partner; no other account is referenced or implied, and any investor-funding conversation is a completely separate track; (2) audience is the Anchorage C-suite specifically; (3) the engineering collaborator carries an earned co-founder path and the eng-eval lane under a written COI disclosure, split unstated; (4) this proposal is STANDALONE, riding no prior engagement (predecessor motion archived as dead); (5) the $4B->$10B line stays an UNVERIFIED premise, presented as a requirements model (v2) with value-model counsel panel presentation rules applied and securities pass pending, magnitudes signed at intake, never a promise (S02/S02B framing confirmed). Remaining open: the COI disclosure's exact wording (counsel).</li>
-    <li><b>Counsel #5 wording, APPLIED 2026-07-24:</b> the value-model panel's unanimous presentation rules are applied on this surface and the whitepaper exec summary: S02 reframed as a joint value-creation hypothesis (conditions for 2.5x, never a forecast, promise, or engagement-attributed outcome); the $4B base handed to Anchorage as public shorthand; crypto-cycle beta partitioned in one sentence; the first-agentic slogan replaced with governance-forward phrasing throughout; no dollar-valuation outcome stated as an engagement deliverable.</li>
-    <li><b>Product name:</b> deliberately unnamed on this external deliverable, per repo correction 1. The internal working name (proj-x) is not carried onto client-facing surfaces pending the founder's explicit call.</li>
-    <li><b>Hard gates before any external send:</b> counsel securities pass over deck, whitepaper, and presenter notes (the S02 value framing especially); founder sign-off; entity formation + IP assignment; written conflict-of-interest disclosure before any money or Anchorage-facing move; the consent annex assembled as a sendable document (W9.3 founder gate still open).</li>
-    <li><b>Lineage discipline:</b> every stat carries its tag. MEASURED figures are the reference implementation (n=1). SURVEY figures are cited third parties. Anything UNVERIFIED is a candidate, not a claim, and is not quotable in the room.</li>
-    <li><b>Format strategy (from the 2026-07-23 audience research, research/2026-07-23-audience-format/):</b> for a regulated C-suite, the boardroom PDF closes, a narrow scripted live demo confirms, and the animated HTML excites. This full 21-panel deck is the INTERNAL WORKING MASTER and concept artifact; the external first-meeting instrument is the 12-slide room cut, now built as anchorage-room-cut.html (published as room.html). The whitepaper carries the diligence detail for staff-level risk/compliance review.</li>
-    <li><b>B3.5 gate blockers fixed, 2026-07-24:</b> the cross-survey compound market statistic was removed and replaced with two independent, correctly-scoped signals (McKinsey scaling rate vs MIT NANDA pilot-P&amp;L rate, side by side, never multiplied); the strategic-equity-stake branch was removed from both artifacts so the room has one executable decision; warranty and absolute lines were bounded to design-intent (capacity measured, not locked; human-gate stated as policy and architecture; anti-layoff stated as a program design goal, not an employment-outcome warranty); the value-model self-clearance phrasing was replaced with "value-model counsel panel presentation rules applied, securities pass pending"; MEASURED reserved for our own telemetry only (press and vendor numbers re-chipped VENDOR); regulatory currency corrected (rescinded model-risk guidance citation dropped for anticipates-supervisory-expectations framing; EU AI Act employment high-risk date December 2, 2027); the engineering ratio dropped for qualitative output parity; the external-action gate reconciled to one de-minimis-aware statement across both files.</li>
-  </ul>
-  <p class="body reveal">This is a working draft for founder review. Nothing here is cleared for external circulation. The Anchorage-facing HTML + DOCX variant (brass-on-navy via /stylize-anchorage) is recommended but not built, pending the founder's audience confirmation above.</p>
-</section>
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Value model v2, reverse-requirements rebuild</h4>
+          <p class="e-what">Rebuilt from the $10B identity backward: sum-of-parts, pilot-gated capture with a sensitivity table, bank-native levers, and a proof ladder.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">9 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 06-deck-inputs/value-model-10b-v2.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Sourced comps</h4>
+          <p class="e-what">Five sourced band sets, each with an honest MEASURED, SURVEY, or VENDOR chip, plus a status ledger of what is confirmed and what is not.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">6 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 06-deck-inputs/comps-sourced-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Gap closures and the Dimon verbatim</h4>
+          <p class="e-what">The unattributable 30 to 40% stat excised and grep-gated; Dimon's $2B secured to Bloomberg TV and confirmed absent from JPM primary docs; two gaps recorded as gaps.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">6 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 03-execution/gap-closures-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">The counsel gate, sensitivity-table philosophy</h4>
+          <p class="e-what">The gate that keeps the model honest: the distribution carries the aggression, a point estimate never does. v1 not deck-cleared, v2 the version the deck consumes.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">4 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 06-deck-inputs/value-model-counsel-gate.md</span></div>
+    </article>
+  </section>
+
+  <!-- CH4 ARTIFACTS -->
+  <section class="chapter" id="ch4">
+    <div class="ch-head"><span class="ch-num">04</span><h2 class="ch-title">The Artifacts</h2></div>
+    <p class="ch-lead">These are the finished, viewable surfaces. The external room cut is the 12-slide instrument for the Anchorage C-suite; the internal working master is the full narrative for founder and team eyes; the whitepaper carries the business model in prose. The Carter walkthrough, the founder-only hardening plan, and the self-demonstrating fleet-HUD demo round out the set.</p>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">External room cut</h4>
+          <p class="e-what">The 12-slide meeting instrument for the Anchorage C-suite. External-safe and counsel-worded; every number chipped.</p></div>
+        <div class="e-meta"><span class="chip s-live">Live</span><span class="rt">12 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">hosted</span><a class="lnk" href="https://winnsolutionsadmin.github.io/deck-3df9b3c4/" target="_blank" rel="noopener">https://winnsolutionsadmin.github.io/deck-3df9b3c4/</a></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Internal working master</h4>
+          <p class="e-what">The full internal narrative, with the S02 and S02B value-model evidence. Founder and team eyes; the deepest single read in the set.</p></div>
+        <div class="e-meta"><span class="chip s-live">Live</span><span class="rt">18 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">hosted</span><a class="lnk" href="https://winnsolutionsadmin.github.io/fr-446d3c54/internal-master.html" target="_blank" rel="noopener">https://winnsolutionsadmin.github.io/fr-446d3c54/internal-master.html</a></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Whitepaper, Anchorage-facing</h4>
+          <p class="e-what">The business model in prose, with an HTML showpiece and a content-parity Master DOCX for the audiences who want a document.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">15 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 09-deliverables/whitepaper/anchorage-first-whitepaper.html</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Carter walkthrough</h4>
+          <p class="e-what">What I'm proposing: the Carter and Jarred sales walkthrough for the 7/25 call, framing the mutual-exclusivity offer.</p></div>
+        <div class="e-meta"><span class="chip s-live">Live</span><span class="rt">8 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">hosted</span><a class="lnk" href="https://winnsolutionsadmin.github.io/blueprint-2e87b1/" target="_blank" rel="noopener">https://winnsolutionsadmin.github.io/blueprint-2e87b1/</a></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Hardening plan, founder-only</h4>
+          <p class="e-what">What we do now: the diligence-hardening plan that turns the concept into something a regulated institution can bet on. Not for external eyes.</p></div>
+        <div class="e-meta"><span class="chip s-live">Live</span><span class="rt">10 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">hosted</span><a class="lnk" href="https://winnsolutionsadmin.github.io/fr-446d3c54/hardening.html" target="_blank" rel="noopener">https://winnsolutionsadmin.github.io/fr-446d3c54/hardening.html</a></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Fleet-HUD demo</h4>
+          <p class="e-what">A self-contained, self-demonstrating readout of the org product: the fleet at a glance, with all action gates inert. The product shown, not described.</p></div>
+        <div class="e-meta"><span class="chip s-live">Live</span><span class="rt">6 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">hosted</span><a class="lnk" href="https://winnsolutionsadmin.github.io/fr-446d3c54/demo.html" target="_blank" rel="noopener">https://winnsolutionsadmin.github.io/fr-446d3c54/demo.html</a></div>
+    </article>
+  </section>
+
+  <!-- CH5 BUILD -->
+  <section class="chapter" id="ch5">
+    <div class="ch-head"><span class="ch-num">05</span><h2 class="ch-title">The Build</h2></div>
+    <p class="ch-lead">The product is not just described, it is partly running. A front-door HUD spike, an onboarding-engine skill that was dogfooded by running the Anchorage rollout into ClickUp, routing upgrades in the session manager, and a persistent build operator all shipped inside the loop. The W12 education playbook carries 15 worked examples with 4 slots left open for the founder's own.</p>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">W3 fleet-HUD spike</h4>
+          <p class="e-what">The front-door demo build: the script, the self-demonstration dataset, and the HUD itself (hosted copy in Chapter 4).</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">5 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W3-front-door/demo-script.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Onboarding-engine skill and its dogfood run</h4>
+          <p class="e-what">The vision-interview to deep-research to counsel to plan to ClickUp workflow, shipped as a reusable skill and dogfooded by running the Anchorage rollout P0 to P7 into a live board.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">4 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">reference</span><span class="path"><b>skill</b> &middot; onboarding-engine &middot; dogfood: Anchorage rollout P0 to P7 (ClickUp)</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Session-manager routing upgrades</h4>
+          <p class="e-what">Mid-conversation repo detection, auto-assign, and collision-safe subagent build, the exact loop from the braindump's first paragraph. P1, P2, P3 shipped with 97 tests.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">5 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 10-analysis/session-manager-productization-echoes-2026-07-24.md &middot; (session-manager, branch sm/repo-routing-review)</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Forge, the persistent build operator</h4>
+          <p class="e-what">A standing autonomous operator that owns the proof-unit build and the Carter input chase, running its own board. The org product's own machinery, applied to the venture.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">3 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">reference</span><span class="path"><b>operator</b> &middot; agents/forge.md &middot; ClickUp board 901819880782</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">W12 education playbook</h4>
+          <p class="e-what">Fifteen worked examples with four slots reserved for the founder's own work, plus the curriculum v1 and the training deployment plan. The durable-human-value doctrine, made concrete.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">10 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W12-education/worked-examples-v1.md &middot; curriculum-v1.md</span></div>
+    </article>
+  </section>
+
+  <!-- CH6 PACKETS -->
+  <section class="chapter" id="ch6">
+    <div class="ch-head"><span class="ch-num">06</span><h2 class="ch-title">The Packets</h2></div>
+    <p class="ch-lead">Eight decision-ready packets take the venture to the edge of every external commitment and stop. Each one is drafted to be handed to a lawyer, not acted on: entity and IP, consent, conflict-of-interest wordings, meeting booking, the pilot KPI contract, vendor-security armor, the telemetry plan, and the Carter fallback posture. Every packet is lawyer-review-required by construction; nothing here is executed.</p>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C1 &middot; Entity and IP, plus the 8-question lawyer letter</h4>
+          <p class="e-what">Recommendation: Delaware C-corp now, platform IP assigned at formation with an 83(b), a Palantir-style FDE posture for Anchorage. Thirteen items for counsel, including the ready-to-send lawyer letter.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">9 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W2-entity-equity/entity-ip-decision-packet-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C2 &middot; Consent annex</h4>
+          <p class="e-what">A recommended-posture-first draft of the employee-data consent annex, with ten items for counsel. The posture pick is decision D4.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">6 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W9-data-governance/consent-annex-draft-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C3 &middot; COI disclosure wordings</h4>
+          <p class="e-what">Three conflict-of-interest wordings for the Carter lane, with the equity split kept unstated by design. Five items for counsel.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">5 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W2-entity-equity/coi-disclosure-draft-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C4 &middot; Meeting-booking memo</h4>
+          <p class="e-what">Recommended path: a single-exec sponsor 1:1 first, then a written scoped blessing on the sponsor's own desk, then a dated group session. The ask script is hypothesis-framed.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">8 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W11-anchorage-engagement/meeting-booking-packet-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C5 &middot; Pilot KPI contract skeleton</h4>
+          <p class="e-what">A KPI dictionary, a 3-row capture target, a CFO and COO attestation cadence, dual-control, and the FDE IP cross-reference. Seven items for counsel.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">8 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W7-pilot-design/pilot-kpi-contract-skeleton-v2-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C6 &middot; Vendor-security armor</h4>
+          <p class="e-what">A data-flow-diagram outline, an honest SOC2 bridge posture, PII and LLM retention rules, and a 15-question answer bank with honest UNKNOWNs on pentest, BCDR, and insurance.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">9 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W9-data-governance/vendor-security-packet-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C7 &middot; Telemetry plan</h4>
+          <p class="e-what">Split into sources-to-configure (the estate runs today) and system-to-build (the one-stream contract, the net-capacity ledger, the absence detector, the three missing instruments). Build blocked on Nick 7/31 and the W9.3 posture.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">7 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W7-pilot-design/pilot-telemetry-implementation-plan-2026-07-24.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">C8 &middot; Carter fallback posture</h4>
+          <p class="e-what">The pitch stands on the founder's own fleet evidence alone; Carter strengthens it, never gates it. The 7/25 call is framed as a binary. Appended to the meeting-booking packet.</p></div>
+        <div class="e-meta"><span class="chip s-gated">Gated</span><span class="rt">3 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 07-roadmap/W11-anchorage-engagement/meeting-booking-packet-2026-07-24.md (C8 section)</span></div>
+    </article>
+  </section>
+
+  <!-- CH7 GAUNTLET -->
+  <section class="chapter" id="ch7">
+    <div class="ch-head"><span class="ch-num">07</span><h2 class="ch-title">The Gauntlet</h2></div>
+    <p class="ch-lead">Nothing shipped without being attacked first. The value model passed a deliberate panel; the deck and whitepaper hit a formal gate that returned a full BLOCK, took 15 fixes plus a room cut, re-gated, took 8 residual fixes, then a ship-audit closed four more blind spots including a live hosting-exposure rotation. Honest evidence won every collision: the unattributable 30 to 40% stat was cut and grep-gated, the Dimon figure was traced to its real source, and two gaps were recorded as gaps rather than papered over.</p>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">The deliberate panel</h4>
+          <p class="e-what">Six models attacked and defended the value model, then judged it. Ambition intact, six unanimous fixes, the rebuild owed.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">10 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 05-counsel/2026-07-24-value-model-10b-panel.md</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Formal gate, re-gate, and the fixes</h4>
+          <p class="e-what">Gate returned BLOCK on both artifacts (6 of 6), took 15 fixes plus a room cut, re-gated at 5 of 6, then 8 residual fixes. The full timeline, with every blocker, is in the ledger loop log.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">8 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>miscellaneous repo</b> &middot; threads/2026-07-24-execution-loop.md (B3 rows and loop log)</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">Ship-audit and the four blind spots</h4>
+          <p class="e-what">A final audit scored the field and surfaced four distinct blind spots, all closed the same cycle: a live hosting-exposure rotation, missing infosec armor (C6), missing pilot telemetry (C7), and a Carter dependency without a founder-only fallback (C8).</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">5 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>miscellaneous repo</b> &middot; threads/2026-07-24-execution-loop.md (B6 row and rotation log)</span></div>
+    </article>
+
+    <article class="entry">
+      <div class="e-top">
+        <div><h4 class="e-title">The honest-evidence record</h4>
+          <p class="e-what">The ghost 30 to 40% efficiency stat excised everywhere and grep-gated; the Dimon $2B secured to its real source; two gaps recorded honestly: the EV-over-AUC metric does not exist, and there is no equity-level crypto-cycle compression band.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">6 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 03-execution/gap-closures-2026-07-24.md</span></div>
+    </article>
+  </section>
+
+  <!-- CH8 YOUR MOVES -->
+  <section class="chapter" id="ch8">
+    <div class="ch-head"><span class="ch-num">08</span><h2 class="ch-title">Your Moves</h2></div>
+    <p class="ch-lead">The loop drove every automatable and prep item to done and then stopped at the founder line. What remains is yours: a review pass, a handful of decisions, and two external follow-throughs. The standing hard gates at the bottom survive everything and bind before any external commitment.</p>
+
+    <ul class="movelist">
+      <li><span class="code">D1</span><span class="txt"><b>Review pass and sign-off.</b> Read the deck, the whitepaper, and the v2 model, and clear the sign-off gate. This is the one that unblocks the most.</span><span class="e-meta"><span class="chip s-await">Awaiting-founder</span></span></li>
+      <li><span class="code">D8</span><span class="txt"><b>Set the pilot decision-card values:</b> the fee (recommend the W8 research bands), the capture threshold, and the named-workflow shortlist. The room-cut card becomes executable the moment these three are set.</span><span class="e-meta"><span class="chip s-await">Awaiting-founder</span></span></li>
+      <li><span class="code">D3</span><span class="txt"><b>Start the entity and lawyer engagement</b> from the C1 packet. Send the 8-question letter.</span><span class="e-meta"><span class="chip s-await">Awaiting-founder</span></span></li>
+      <li><span class="code">D4</span><span class="txt"><b>Pick the consent-annex posture</b> from the C2 draft.</span><span class="e-meta"><span class="chip s-await">Awaiting-founder</span></span></li>
+      <li><span class="code">D5</span><span class="txt"><b>Book the Anchorage C-level session</b> using the C4 memo: sponsor 1:1 first, then the scoped blessing, then the dated group session.</span><span class="e-meta"><span class="chip s-await">Awaiting-founder</span></span></li>
+      <li><span class="code">D2</span><span class="txt"><b>Give the W12 worked-examples input:</b> a 60 to 90 minute walkthrough, or pick from the four founder slots left open in the playbook.</span><span class="e-meta"><span class="chip s-await">Awaiting-founder</span></span></li>
+      <li><span class="code">D7</span><span class="txt"><b>Confirm or adjust the vector-first W4 display default</b> (five named dials from day one; the composite scalar unlocks after calibration).</span><span class="e-meta"><span class="chip s-await">Awaiting-founder</span></span></li>
+    </ul>
+
+    <div class="callout" style="margin-top:20px">
+      <div class="co-h">External follow-throughs</div>
+      <ul class="gates">
+        <li><b>Carter, the binary follow-through.</b> Execute the 7/25 call and force the binary; the ask for his methodology memo and talk materials is prepped in the call pack. He strengthens the pitch, he does not gate it.</li>
+        <li><b>Nick, mechanics due 7/31.</b> The gamification mechanics definition, with H1 to H5 interims if the pilot accelerates.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <div class="co-h">Standing hard gates &middot; these survive everything</div>
+      <ul class="gates">
+        <li><b>Securities counsel pass</b> before the $4B to $10B model touches any external instrument.</li>
+        <li><b>Entity formation</b> and platform-IP assignment.</li>
+        <li><b>COI disclosure</b> in writing for the Carter lane.</li>
+        <li><b>Consent annex</b> in place before any employee-data capture.</li>
+      </ul>
+    </div>
+
+    <article class="entry" style="margin-top:18px">
+      <div class="e-top">
+        <div><h4 class="e-title">The consolidated decision sheet</h4>
+          <p class="e-what">Every open founder decision in one place, ordered by blocking date. The D-list above is the near-term cut of this.</p></div>
+        <div class="e-meta"><span class="chip s-draft">Draft</span><span class="rt">7 min</span></div>
+      </div>
+      <div class="e-link"><span class="tag">repo path</span><span class="path"><b>concept repo</b> &middot; 09-deliverables/founder-decisions.md</span></div>
+    </article>
+  </section>
+
+  <footer class="foot">
+    <span>winn.solutions</span>
+    <span><b>loop converged</b> &middot; 2026-07-24</span>
+    <span>confidential &middot; founder-eyes &middot; do not distribute</span>
+  </footer>
 
 </main>
 
-<div class="draftbar">
-  <span><b>DRAFT · ANCHORAGE-FIRST · INTERNAL REVIEW ONLY · NOT FOR CIRCULATION</b> · securities pass + sign-off pending</span>
-  <span>agent-os-foundation · 2026-07-23 · product unnamed · built on braindump + concept corpus</span>
-</div>
-
 <script>
-  document.documentElement.classList.add('js');
-  const links=[...document.querySelectorAll('.rail a')];
-  const slides=[...document.querySelectorAll('section.slide')];
-  const byId=Object.fromEntries(links.map(a=>[a.getAttribute('href').slice(1),a]));
-  const io=new IntersectionObserver(es=>{
-    es.forEach(e=>{
-      if(e.isIntersecting){
-        links.forEach(a=>a.classList.remove('on'));
-        (byId[e.target.id]||links[0]).classList.add('on');
-      }
-    });
-  },{threshold:.45});
-  slides.forEach(s=>io.observe(s));
-  const ro=new IntersectionObserver(es=>{
-    es.forEach(e=>{ if(e.isIntersecting){
-      [...e.target.querySelectorAll('.reveal')].forEach((el,i)=>setTimeout(()=>el.classList.add('in'),i*90));
-    }});
-  },{threshold:.2});
-  slides.forEach(s=>ro.observe(s));
-  let idx=0;
-  const go=i=>{idx=Math.max(0,Math.min(slides.length-1,i));slides[idx].scrollIntoView({behavior:'smooth'})};
-  addEventListener('keydown',e=>{
-    if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(idx+1)}
-    if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(idx-1)}
-  });
-  const io2=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)idx=slides.indexOf(e.target)})},{threshold:.55});
-  slides.forEach(s=>io2.observe(s));
+(function(){
+  var navlinks = Array.prototype.slice.call(document.querySelectorAll('.chapnav a'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.chapter'));
+  var map = {};
+  navlinks.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          navlinks.forEach(function(a){ a.classList.remove('on'); });
+          var a = map[e.target.id]; if(a){ a.classList.add('on');
+            a.scrollIntoView({inline:'center', block:'nearest'}); }
+        }
+      });
+    }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+    secs.forEach(function(s){ io.observe(s); });
+  }
+})();
 </script>
 </body>
 </html>
