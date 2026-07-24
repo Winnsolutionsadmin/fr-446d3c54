@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What We Do Now · The Hardening Plan · proj-x (internal)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#0E2338; --paper-deep:#0A1A2B;
+    --ink:#DCE9F5; --ink-dim:#8FA9C2;
+    --grid:rgba(220,233,245,.045); --grid-major:rgba(220,233,245,.09);
+    --amber:#F5A83C; --teal:#5FD0C4; --red:#E5533C;
+    --rule:rgba(220,233,245,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:'Archivo',sans-serif; font-size:16px; line-height:1.55;
+    background-image:
+      linear-gradient(var(--grid-major) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:140px 140px,140px 140px,28px 28px,28px 28px;
+  }
+  .sheet{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:72px 24px;position:relative;border-bottom:1px solid var(--rule);}
+  .sheet-inner{max-width:1040px;width:100%;}
+  .sht-no{position:absolute;top:22px;left:26px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--ink-dim);}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:18px;}
+  .eyebrow .tick{color:var(--amber);}
+  h1{font-weight:800;font-size:clamp(38px,6.6vw,80px);line-height:1.02;letter-spacing:-.015em;text-transform:uppercase;}
+  h2{font-weight:800;font-size:clamp(26px,4.2vw,46px);line-height:1.06;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:24px;}
+  .sub{color:var(--ink-dim);font-size:clamp(16px,2vw,19px);max-width:660px;margin-top:22px;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .amber{color:var(--amber);} .teal{color:var(--teal);} .red{color:var(--red);}
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+  .rv.in{opacity:1;transform:none;}
+  .rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}.rv.d4{transition-delay:.48s}
+  .titleblock{margin-top:52px;display:inline-block;border:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.06em;}
+  .titleblock table{border-collapse:collapse;}
+  .titleblock td{border:1px solid var(--rule);padding:7px 14px;color:var(--ink-dim);}
+  .titleblock td b{color:var(--ink);font-weight:600;}
+
+  /* stress map table */
+  table.stress{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px;}
+  table.stress th,table.stress td{border:1px solid var(--rule);padding:12px 15px;text-align:left;vertical-align:top;}
+  table.stress th{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);font-weight:500;}
+  .badge{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;padding:3px 9px;border:1px solid currentColor;white-space:nowrap;}
+  .b-crit{color:var(--red);} .b-watch{color:var(--amber);} .b-ok{color:var(--teal);}
+
+  /* harden sheets */
+  .hhead{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:6px;}
+  .hnum{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.2em;border:1px solid var(--amber);color:var(--amber);padding:6px 12px;}
+  .load{margin:18px 0 6px;padding:14px 18px;border-left:2px solid var(--red);color:var(--ink-dim);font-size:15.5px;}
+  .load b{color:var(--red);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;display:block;margin-bottom:6px;}
+  .moves{list-style:none;margin-top:16px;}
+  .moves li{display:flex;gap:16px;padding:12px 0;border-bottom:1px dashed var(--rule);font-size:16px;}
+  .moves li:last-child{border:none;}
+  .moves .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;min-width:110px;padding-top:3px;color:var(--teal);}
+  .moves b{color:#fff;font-weight:600;}
+  .chip{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--ink-dim);border:1px dashed var(--rule);padding:1px 6px;white-space:nowrap;}
+
+  /* sequence */
+  .seq{margin-top:8px;}
+  .seq li{display:flex;gap:18px;align-items:baseline;padding:13px 0;border-bottom:1px dashed var(--rule);list-style:none;font-size:16px;}
+  .seq li:last-child{border:none;}
+  .seq .when{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;min-width:120px;color:var(--amber);padding-top:3px;white-space:nowrap;}
+  .seq b{color:#fff;}
+
+  /* strengths */
+  .gets{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px;}
+  .getcard{border:1px solid var(--rule);padding:26px;background:rgba(10,26,43,.55);}
+  .getcard h3{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.2em;margin-bottom:14px;}
+  .getcard ul{list-style:none;}
+  .getcard li{padding:8px 0;border-bottom:1px dashed var(--rule);font-size:15.5px;}
+  .getcard li:last-child{border:none;}
+
+  .bigq{font-size:clamp(24px,3.8vw,42px);font-weight:800;text-transform:uppercase;line-height:1.12;max-width:900px;}
+  .nonums{margin-top:36px;padding:15px 20px;border:1px dashed var(--rule);font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-dim);max-width:680px;}
+
+  @media (max-width:760px){
+    .gets{grid-template-columns:1fr;}
+    table.stress{font-size:13px;} table.stress th,table.stress td{padding:8px 9px;}
+    .seq .when{min-width:86px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .rv{opacity:1;transform:none;transition:none;} html{scroll-behavior:auto;}
+  }
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<!-- SHT 01 · TITLE -->
+<section class="sheet">
+  <span class="sht-no">SHT 01 / 12</span>
+  <div class="sheet-inner">
+    <div class="eyebrow rv"><span class="tick">///</span> FOUNDER INTERNAL · STRUCTURAL ANALYSIS · REV B</div>
+    <h1 class="rv d1">What we do now.<br>How we harden.</h1>
+    <p class="sub rv d2">The plan is consolidated and counsel-tested. This is the stress map: where the structure can break, the reinforcement for each load point, and the 30-day build sequence.</p>
+    <div class="titleblock rv d3">
+      <table>
+        <tr><td>PROJECT</td><td><b>PROJ-X (INTERNAL NAME)</b></td><td>DATE</td><td><b>2026-07-24</b></td></tr>
+        <tr><td>DRAWING</td><td><b>HARDENING PLAN, 6 LOAD POINTS</b></td><td>REV</td><td><b>B · POST-COUNSEL</b></td></tr>
+        <tr><td>BASIS</td><td><b>109-ITEM COVERAGE MATRIX + 5 RESEARCH BRIEFS + 6-MODEL PANEL</b></td><td>DRAWN</td><td><b>KAI / JW</b></td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- SHT 02 · WHERE WE STAND -->
+<section class="sheet">
+  <span class="sht-no">SHT 02 / 12</span>
+  <div class="sheet-inner">
+    <div class="eyebrow rv"><span class="tick">///</span> STATE SNAPSHOT</div>
+    <h2 class="rv">Where we stand tonight</h2>
+    <ul class="moves">
+      <li class="rv d1"><span class="k">CONSOLIDATED</span><span>Both founder braindumps mapped to <b>109 tracked items, zero silent drops</b>. Concept doc carries the supersessions as top authority. Lanes W0 through W12 exist and are owned.</span></li>
+      <li class="rv d1"><span class="k">RESEARCHED</span><span>Five cited research briefs injected: rollout precedents, gamification evidence, adoption measurement, funding landscape, legal navigation map.</span></li>
+      <li class="rv d2"><span class="k">ANCHORAGE</span><span><b>Buy-in exists.</b> Tandem and separate from the sprint engagement. Engagement plan, per-layer intake banks, and the 4B to 10B value model are drafted.</span></li>
+      <li class="rv d2"><span class="k">CARTER</span><span>Call is tomorrow. Structure deck + counsel-hardened package V2 ready. His three evidence deliverables are outstanding; the package is gated on proof.</span></li>
+      <li class="rv d3"><span class="k">IN FLIGHT</span><span>Sibling sessions: deck/whitepaper retarget to the Anchorage C-suite; session-manager routing review; skills-to-workflows map. Nick's mechanics due 7/31.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 03 · STRESS MAP -->
+<section class="sheet">
+  <span class="sht-no">SHT 03 / 12</span>
+  <div class="sheet-inner">
+    <div class="eyebrow rv"><span class="tick">///</span> LOAD ANALYSIS</div>
+    <h2 class="rv">The stress map</h2>
+    <table class="stress rv d1">
+      <tr><th>#</th><th>Load point</th><th>Stress</th><th>Why it can break the structure</th></tr>
+      <tr><td class="mono">L1</td><td><b>Evidence gap</b></td><td><span class="badge b-crit">CRITICAL</span></td><td>The 16x claim is unverified and its methodology never arrived. Every pitch that leans on it is load-bearing on air.</td></tr>
+      <tr><td class="mono">L2</td><td><b>Entity + IP not formed</b></td><td><span class="badge b-crit">CRITICAL</span></td><td>No entity means no clean IP home, no signable pilot, no grants, no raise. Counsel called a missing entity a fatal flaw.</td></tr>
+      <tr><td class="mono">L3</td><td><b>Carter dependency</b></td><td><span class="badge b-watch">WATCH</span></td><td>The engineering pillar leans on one unproven partner who is 10+ days late on his own deadlines.</td></tr>
+      <tr><td class="mono">L4</td><td><b>Single-account concentration</b></td><td><span class="badge b-watch">WATCH</span></td><td>Anchorage is the proof engine AND the revenue engine AND the case study. One relationship carries three loads.</td></tr>
+      <tr><td class="mono">L5</td><td><b>Compliance runway</b></td><td><span class="badge b-watch">WATCH</span></td><td>CA and CO algorithmic-management deadlines land Jan 1 2027. Scoring/bonus structures built wrong now get rebuilt under deadline.</td></tr>
+      <tr><td class="mono">L6</td><td><b>Founder bus factor</b></td><td><span class="badge b-watch">WATCH</span></td><td>One operator runs the estate, the account, the GTM, and the teaching. Counsel blind spot 3, still open.</td></tr>
+    </table>
+    <p class="sub rv d2">Six load points. Two critical, four watch. Every one has a reinforcement drawn on the next sheets.</p>
+  </div>
+</section>
+
+<!-- SHT 04 · HARDEN 1 EVIDENCE -->
+<section class="sheet">
+  <span class="sht-no">SHT 04 / 12</span>
+  <div class="sheet-inner">
+    <div class="hhead rv"><span class="hnum">HARDEN 1</span><h2 style="margin-bottom:0;">Evidence</h2></div>
+    <div class="load rv d1"><b>LOAD L1 · CRITICAL</b>MIT found 95% of enterprise AI pilots deliver no measurable ROI <span class="chip">SURVEY · MIT NANDA 2025</span>. Our differentiator is capturing the gain the 95% leave behind. That claim needs measured proof, and the 16x is not it yet.</div>
+    <ul class="moves">
+      <li class="rv d1"><span class="k">FALLBACK</span><span><b>Ship output-parity, not 16x.</b> "4 matched the output of 18" is defensible today; the raw multiplier stays off every surface until methodology lands.</span></li>
+      <li class="rv d2"><span class="k">BASELINES</span><span><b>Measure before we touch anything.</b> Anchorage intake captures throughput, P0 cycle time, and focus-time baselines so every later claim is a before/after we own. <span class="chip">DORA / SPACE framed</span></span></li>
+      <li class="rv d2"><span class="k">LEDGER</span><span><b>Honest-math chips on every number</b>, everywhere, no exceptions. The credibility of the 10B model is the chips, not the magnitude.</span></li>
+      <li class="rv d3"><span class="k">SPRINT</span><span><b>The Carter proof sprint doubles as evidence manufacturing:</b> a paid, instrumented 60-90 day build with acceptance metrics becomes our first fully-owned case study.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 05 · HARDEN 2 ENTITY -->
+<section class="sheet">
+  <span class="sht-no">SHT 05 / 12</span>
+  <div class="sheet-inner">
+    <div class="hhead rv"><span class="hnum">HARDEN 2</span><h2 style="margin-bottom:0;">Entity + IP spine</h2></div>
+    <div class="load rv d1"><b>LOAD L2 · CRITICAL</b>Nothing signable exists. No entity, no IP assignments, no control instruments, no named compliance owner. Every week open widens the exposure.</div>
+    <ul class="moves">
+      <li class="rv d1"><span class="k">FORM NOW</span><span><b>Form the entity this week.</b> Plain legal name; the product name stays unnamed externally by design. Everything downstream (pilot paper, grants, escrow) needs it.</span></li>
+      <li class="rv d2"><span class="k">ASSIGN</span><span><b>IP assignments day one</b>: Jarred's estate contributions in, work-for-hire on everything forward, Carter's Recurro as escrowed present-assignment with the price fixed now.</span></li>
+      <li class="rv d2"><span class="k">CONTROL</span><span><b>Paper control separately from economics</b>: founder shares, board, protective provisions. No grant to anyone ever moves control.</span></li>
+      <li class="rv d3"><span class="k">OWNER</span><span><b>Name the legal/compliance owner</b> at formation. One human accountable, not a diffuse team.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 06 · HARDEN 3 CARTER -->
+<section class="sheet">
+  <span class="sht-no">SHT 06 / 12</span>
+  <div class="sheet-inner">
+    <div class="hhead rv"><span class="hnum">HARDEN 3</span><h2 style="margin-bottom:0;">The Carter lane</h2></div>
+    <div class="load rv d1"><b>LOAD L3 · WATCH</b>Six-model counsel scored the original package -45 overall and unanimously killed sign-first exclusivity at -87: it would bar Jarred from his own anchor account's engineering lane against undelivered evidence.</div>
+    <ul class="moves">
+      <li class="rv d1"><span class="k">GATE</span><span><b>Proof before paper.</b> Materials land, then a paid 60-90 day sprint with acceptance metrics, then ONE signing for the whole package. Nothing irreversible before proof.</span></li>
+      <li class="rv d2"><span class="k">ESCROW</span><span><b>IP fight pre-empted:</b> assignment signed up front, held in escrow, price fixed now, permanent fallback license if the trigger never fires.</span></li>
+      <li class="rv d2"><span class="k">LEARN</span><span><b>Jarred learns the delivery.</b> Carter teaches; Jarred sells and delivers. After the first cycle the lane runs even if Carter steps back. That is the real de-risking.</span></li>
+      <li class="rv d3"><span class="k">SCOPED</span><span><b>Exclusivity only ever sprint-scoped until proof</b>: named opportunities, auto-terminates on a missed milestone, no minimum guarantee.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 07 · HARDEN 4 ANCHORAGE -->
+<section class="sheet">
+  <span class="sht-no">SHT 07 / 12</span>
+  <div class="sheet-inner">
+    <div class="hhead rv"><span class="hnum">HARDEN 4</span><h2 style="margin-bottom:0;">The Anchorage engine</h2></div>
+    <div class="load rv d1"><b>LOAD L4 · WATCH</b>One account carries proof, revenue, and narrative. If the engagement wobbles, all three wobble with it.</div>
+    <ul class="moves">
+      <li class="rv d1"><span class="k">IN WRITING</span><span><b>Convert buy-in to a written scoped blessing</b>: engineering eval + org-wide learning access. Verbal buy-in is not a foundation; a signed scope is.</span></li>
+      <li class="rv d2"><span class="k">SEPARATE</span><span><b>Keep the two engagements airtight</b>: separate paper, separate framing, written COI hygiene. Never let the sprint work and the agentic-org motion blur.</span></li>
+      <li class="rv d2"><span class="k">METHOD</span><span><b>Beat the 95% the documented way</b>: redesign one workflow end to end first, champion network at 1 per 15-30 <span class="chip">Ropes & Gray, Citi precedents</span>, non-mandated adoption, bank autonomy ladder with permanent human gates.</span></li>
+      <li class="rv d3"><span class="k">PORTABLE</span><span><b>Everything built for Anchorage is built portable</b>: the in-the-box solution is the reference implementation of the retained product, so the account concentration converts into an asset that outlives any one account.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 08 · HARDEN 5 COMPLIANCE -->
+<section class="sheet">
+  <span class="sht-no">SHT 08 / 12</span>
+  <div class="sheet-inner">
+    <div class="hhead rv"><span class="hnum">HARDEN 5</span><h2 style="margin-bottom:0;">The compliance runway</h2></div>
+    <div class="load rv d1"><b>LOAD L5 · WATCH</b>CA ADMT and CO disclosure rules bind Jan 1 2027. IL notice law is already live. Build the scoring stack wrong in 2026 and we rebuild it under deadline in 2027 <span class="chip">cited · legal navigation map</span>.</div>
+    <ul class="moves">
+      <li class="rv d1"><span class="k">ASSET</span><span><b>Our human-gate law IS the compliance strategy.</b> Decision-support behind a human with override authority stays outside the automated-decision triggers. The product design and the law point the same direction.</span></li>
+      <li class="rv d2"><span class="k">BUILD NOW</span><span><b>Bake the eight routes in during the 2026 window</b>: aggregation thresholds, notice floor, opt-in kudos decoupled from comp, discretionary bonuses, vendor wrapper, voluntary bias audit.</span></li>
+      <li class="rv d3"><span class="k">NO GATE</span><span><b>Nothing deleted.</b> Every scoring/analytics idea keeps its route. The navigation map stays the standing posture: why-good first, structure second, nothing conservatized.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 09 · HARDEN 6 BUS FACTOR -->
+<section class="sheet">
+  <span class="sht-no">SHT 09 / 12</span>
+  <div class="sheet-inner">
+    <div class="hhead rv"><span class="hnum">HARDEN 6</span><h2 style="margin-bottom:0;">The founder bus factor</h2></div>
+    <div class="load rv d1"><b>LOAD L6 · WATCH</b>One operator is the estate, the account, the GTM, and the teacher. Everything scales through one calendar.</div>
+    <ul class="moves">
+      <li class="rv d1"><span class="k">PLAYBOOK</span><span><b>The W12 education playbook is also the redundancy plan.</b> Documenting how Jarred works (worked examples, the coding tutorial, per-layer curricula) converts tacit method into transferable asset.</span></li>
+      <li class="rv d2"><span class="k">PRODUCTIZE</span><span><b>W5 turns estate patterns into product</b>: onboarding engine, task routing, assistant distillation. Every pattern productized is a pattern that runs without the founder.</span></li>
+      <li class="rv d2"><span class="k">MODEL</span><span><b>Write the founder operating model one-pager</b> (roles, decision rights, capacity plan). Counsel blind spot 3; it closes this quarter.</span></li>
+      <li class="rv d3"><span class="k">LANES</span><span><b>Each lane gets a second engine</b>: Carter earns engineering, Nick earns mechanics, agents run the machinery. Contribution earns equity; the founder keeps vision and control.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 10 · 30-DAY SEQUENCE -->
+<section class="sheet">
+  <span class="sht-no">SHT 10 / 12</span>
+  <div class="sheet-inner">
+    <div class="eyebrow rv"><span class="tick">///</span> THE BUILD SEQUENCE</div>
+    <h2 class="rv">The next 30 days</h2>
+    <ul class="seq">
+      <li class="rv d1"><span class="when">7/25</span><span><b>Carter call.</b> Align, ask the one question, set the proof-sprint sequence. No irreversible paper.</span></li>
+      <li class="rv d1"><span class="when">THIS WEEK</span><span><b>Entity formation starts</b> + IP assignment plan + named compliance owner. The signable spine.</span></li>
+      <li class="rv d2"><span class="when">7/26-7/31</span><span><b>Carter materials land</b> (methodology, Recurro, matrix.build) or the sprint scope adjusts to manufacture the evidence ourselves.</span></li>
+      <li class="rv d2"><span class="when">7/31</span><span><b>Nick's gamification mechanics arrive</b>; ingest against the anti-gaming evidence base and the comp-decoupling constraints.</span></li>
+      <li class="rv d3"><span class="when">EARLY AUG</span><span><b>Anchorage blessing in writing</b>, then org-learning intake begins: interviews per layer, bottleneck map, baselines captured BEFORE any rollout.</span></li>
+      <li class="rv d3"><span class="when">AUG</span><span><b>Proof sprint runs</b> (Anchorage eng-eval design, paid, instrumented). Deck/whitepaper finalize off the refreshed corpus. Scoring stack built on the eight compliance routes.</span></li>
+      <li class="rv d4"><span class="when">TRIGGER</span><span><b>The raise clock starts only on a SIGNED design-partner pilot.</b> Everything above feeds that one achievement.</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- SHT 11 · ALREADY STRONG -->
+<section class="sheet">
+  <span class="sht-no">SHT 11 / 12</span>
+  <div class="sheet-inner">
+    <div class="eyebrow rv"><span class="tick">///</span> LOAD-BEARING TODAY</div>
+    <h2 class="rv">What is already strong</h2>
+    <div class="gets">
+      <div class="getcard rv d1">
+        <h3 class="teal">STRUCTURAL ASSETS</h3>
+        <ul>
+          <li>A working fleet-of-one reference implementation, in daily use</li>
+          <li>Anchorage buy-in that already exists, with justification</li>
+          <li>A 109-item consolidated plan with zero silent drops</li>
+          <li>Counsel-tested deal structures before any signing</li>
+          <li>Five cited research briefs injected into every lane</li>
+        </ul>
+      </div>
+      <div class="getcard rv d2">
+        <h3 class="amber">POSITION</h3>
+        <ul>
+          <li>Trusted-companion category: the labs build capability, we walk companies through it</li>
+          <li>Domino GTM confirmed: C-levels, then engineers, then demand</li>
+          <li>Anti-layoff design as a trust anchor no surveillance vendor can copy</li>
+          <li>Human-gate product law that doubles as the compliance strategy</li>
+          <li>Raise on achievement + faith from known investors, not cold diligence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHT 12 · CLOSE -->
+<section class="sheet">
+  <span class="sht-no">SHT 12 / 12</span>
+  <div class="sheet-inner">
+    <div class="eyebrow rv"><span class="tick">///</span> THE ONE METRIC</div>
+    <p class="bigq rv d1">Every load point hardens toward the same event: a signed design-partner pilot. That is the achievement, the raise trigger, and the proof, all in one signature.</p>
+    <ul class="moves" style="margin-top:34px;">
+      <li class="rv d2"><span class="k">TOMORROW</span><span>Run the Carter call off the structure deck. Align warmly, gate firmly.</span></li>
+      <li class="rv d2"><span class="k">THIS WEEK</span><span>Entity + IP spine moving. Anchorage blessing drafted for signature.</span></li>
+      <li class="rv d3"><span class="k">THIS MONTH</span><span>Baselines in, sprint running, mechanics ingested, deck finalized. The pilot paper gets its signature line.</span></li>
+    </ul>
+    <div class="nonums rv d3">INTERNAL DRAWING. STATS CARRY THEIR CHIPS; UNVERIFIED NUMBERS STAY OFF EXTERNAL SURFACES. THE COVERAGE MATRIX (10-ANALYSIS) REMAINS THE COMPLETENESS LEDGER BEHIND THIS SHEET SET.</div>
+  </div>
+</section>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    for (const e of entries){
+      if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    }
+  },{threshold:0.18});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
